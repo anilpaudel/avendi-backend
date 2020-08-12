@@ -9,7 +9,7 @@
 
 const _ = require('lodash');
 //const q = require('q');
-const db = require('../lib/db');
+//const db = require('../lib/db');
 const Unauthorized = require('../lib/errors/Unauthorized');
 
 // POST /auth/login
