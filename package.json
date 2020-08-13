@@ -4,6 +4,7 @@
   "description": "Avendi Backend Dashboard to manage and track.",
   "main": "app.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ashish Belwase",
@@ -12,6 +13,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "http-status-codes": "^1.4.0",
     "lodash": "^4.17.19",
     "mongodb": "^3.6.0",
     "mongodb-uri": "^0.9.7",
@@ -20,6 +22,7 @@
     "use-strict": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^7.6.0"
+    "eslint": "^7.6.0",
+    "prettier": "^2.0.5"
   }
 }

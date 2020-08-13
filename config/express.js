@@ -4,35 +4,33 @@
  *
  */
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const _ = require('lodash');
-
+const morgan = require('morgan');
+const express = require('express');
 const debug = require('debug')('app');
 const debugHTTP = require('debug')('http');
-
 const { Unauthorized } = require('../lib/errors');
-//const uploads = require('../lib/uploader');
+const bodyParser = require('body-parser');
 
-const publicRoutes = [
-  '/api/auth/login',
-];
+const bodyParserErrorHandler = require('../middleware/errorHandler').bodyParser;
+
+const publicRoutes = ['/api/auth/login'];
 
 // accept generic express instances (initialised in app.js)
 exports.configure = function configure(app) {
   // TODO - things don't work well yet.
-// const isProduction = (process.env.NODE_ENV === 'production');
+  // const isProduction = (process.env.NODE_ENV === 'production');
   const isProduction = false;
 
   debug('configuring middleware.');
 
-  app.use(bodyParser.json({ limit : '8mb' }));
-  app.use(bodyParser.urlencoded({ extended : false }));
+  app.use(bodyParser.json({ limit: '8mb' }));
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParserErrorHandler)
 
   // provide a stream for morgan to write to
   const stream = {
-    write : message => debugHTTP(message.trim()),
+    write: (message) => debugHTTP(message.trim()),
   };
 
   // http logger setup
@@ -57,18 +55,19 @@ exports.configure = function configure(app) {
   //app.use(`/${uploads.directory}`, express.static(uploads.directory));
 
   // quick way to find out if a value is in an array
-  function within(value, array) { return array.includes(value.trim()); }
+  function within(value, array) {
+    return array.includes(value.trim());
+  }
 
   // Only allow routes to use /login, /projects, /logout, and /languages if a
   // user session does not exists
-  app.use((req, res, next) => {
-    if (_.isUndefined(req.user) && !within(req.path, publicRoutes)) {
-      console.log(`Rejecting unauthorized access to ${req.path} from ${req.ip}`);
-      //next(new Unauthorized('You are not logged into the system.'));
-      res.status(401).json({error:'You are not logged into the system.'})
-    } else {
-      next();
-    }
-  });
+  // app.use((req, res, next) => {
+  //   if (_.isUndefined(req.user) && !within(req.path, publicRoutes)) {
+  //     console.log(`Rejecting unauthorized access to ${req.path} from ${req.ip}`);
+  //     //next(new Unauthorized('You are not logged into the system.'));
+  //     res.status(401).json({error:'You are not logged into the system.'})
+  //   } else {
+  //     next();
+  //   }
+  // });
 };
-

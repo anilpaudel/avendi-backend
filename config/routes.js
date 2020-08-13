@@ -1,35 +1,57 @@
 /**
  * @overview routes
  * Application Routing
-*/
-
+ */
+const { Router } = require('express');
 
 // unclassified routes
 const auth = require('../controllers/auth');
+const authenticateUser = require('../middleware/authenticate');
 
-// expose routes to the server.
-exports.configure = function configure(app) {
-  console.log('configuring routes.');
+const userRoutes = require('../routes/user');
+const roomRoutes = require('../routes/room');
+const serviceRoutes = require('../routes/service');
+const bookingRoutes = require('../routes/booking');
+const categoryRoutes = require('../routes/category');
+const feedbackRoutes = require('../routes/feedback');
+const foodMenuRoutes = require('../routes/foodMenu');
+const requestRoutes = require('../routes/guestRequest');
+const extensionRoutes = require('../routes/guestExtension');
 
-  app.get('', function(req, res, next) {
-    res.status(200).json({message: 'Avendi Backend'});
-  });
+/**
+ * Contains public API routes for the application.
+ */
+const publicRouter = Router();
 
-  // auth gateway
-  app.post('/auth/login', auth.login);
-  
-  // // room
-  // app.post('/room', room.create);
-  // app.put('/room/:id', room.update);
-  // app.get('/room', room.list);
-  // app.get('/room/:id', room.details);
-  // app.delete('/room/:id', room.remove);
+/**
+ * GET /api
+ */
+publicRouter.get('/', (_, res) => {
+  res.status(200).json({ message: 'Avendi Backend' });
+});
 
-  // // booking
-  // app.post('/booking', booking.create);
-  // app.put('/booking/:id', booking.update);
-  // app.get('/booking', booking.list);
-  // app.get('/booking/:id', booking.details);
+/**
+ * POST /api/auth/login
+ */
+publicRouter.post('/auth/login', auth.login);
 
+/**
+ * Contains secured API routes for the application.
+ */
+const privateRouter = Router();
 
-};
+/**
+ * Authentication middleware for private routes.
+ */
+privateRouter.use(authenticateUser);
+
+privateRouter.use('/user', userRoutes);
+privateRouter.use('/room', roomRoutes);
+privateRouter.use('/booking', bookingRoutes);
+privateRouter.use('/service', serviceRoutes);
+privateRouter.use('/request', requestRoutes);
+privateRouter.use('/category', categoryRoutes);
+privateRouter.use('/feedback', feedbackRoutes);
+privateRouter.use('/extension', extensionRoutes);
+
+module.exports = {publicRouter, privateRouter}
