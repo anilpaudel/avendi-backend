@@ -3,7 +3,7 @@ const { Router } = require('express');
 const router = Router();
 
 const tempController = (req, res) =>
-  res.status(200).json({ message: 'Method not implemented' });
+  res.status(200).json({ message: 'Route Working. Need to implement!' });
 
 /**
  * GET /api/room/
