@@ -23,7 +23,7 @@ const debug = require('debug')('app');
 
 const app = express();
 
-const { methodNotAllowed } = require('./middleware/errorHandler');
+const errorHandler = require('./middleware/errorHandler');
 
 /**
  * @function configureEnvironmentVariables
@@ -80,7 +80,8 @@ const { publicRouter, privateRouter } = require('./config/routes');
 app.use('/api', publicRouter);
 app.use('/api', privateRouter);
 
-app.use(methodNotAllowed);
+app.use(errorHandler.genericErrorHandler);
+app.use(errorHandler.methodNotAllowed);
 
 // ensure the process terminates gracefully when an error occurs.
 process.on('uncaughtException', (e) => {

@@ -1,19 +1,6 @@
 const HttpStatus = require('http-status-codes');
 
-/**
- * Error response middleware for 404 not found.
- *
- * @param {Object} req
- * @param {Object} res
- */
-exports.notFound = function (req, res) {
-  res.status(HttpStatus.NOT_FOUND).json({
-    error: {
-      code: HttpStatus.NOT_FOUND,
-      message: HttpStatus.getStatusText(HttpStatus.NOT_FOUND),
-    },
-  });
-};
+const buildError = require('../utils/buildError');
 
 /**
  * Method not allowed error middleware. This middleware should be placed at
@@ -47,4 +34,18 @@ exports.bodyParser = function (err, req, res, next) {
       message: HttpStatus.getStatusText(err.status),
     },
   });
+};
+
+/**
+ * Generic error response middleware for validation and internal server errors.
+ *
+ * @param  {Object}   err
+ * @param  {Object}   req
+ * @param  {Object}   res
+ * @param  {Function} next
+ */
+exports.genericErrorHandler = function (err, req, res, next) {
+  const error = buildError(err);
+
+  res.status(error.code).json({ error });
 };

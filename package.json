@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node .",
+    "start:dev": "nodemon --watch . .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ashish Belwase",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "eslint": "^7.6.0",
+    "nodemon": "^2.0.4",
     "prettier": "^2.0.5"
   }
 }
