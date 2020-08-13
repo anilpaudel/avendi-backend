@@ -23,6 +23,8 @@ const debug = require('debug')('app');
 
 const app = express();
 
+const { methodNotAllowed } = require('./middleware/errorHandler');
+
 /**
  * @function configureEnvironmentVariables
  *
@@ -42,7 +44,7 @@ function configureEnvironmentVariables() {
   const dotfile = `server/.env.${env}`.trim();
 
   // load the environmental variables into process using the dotenv module
-  dotEnv.config({ path : dotfile });
+  dotEnv.config({ path: dotfile });
 }
 
 /**
@@ -57,10 +59,11 @@ function configureServer() {
   const mode = process.env.NODE_ENV;
 
   // create the server
-  http.createServer(app)
-    .listen(port, () => {
-      console.log(`configureServer(): Server started in mode ${mode} on port ${port}.`);
-    });
+  http.createServer(app).listen(port, () => {
+    console.log(
+      `configureServer(): Server started in mode ${mode} on port ${port}.`
+    );
+  });
 }
 
 // run configuration tools
@@ -73,9 +76,11 @@ require('./config/database');
 require('./config/express').configure(app);
 
 // Link routes
-var router = express.Router();
-require('./config/routes').configure(router);
-app.use('/api', router);
+const { publicRouter, privateRouter } = require('./config/routes');
+app.use('/api', publicRouter);
+app.use('/api', privateRouter);
+
+app.use(methodNotAllowed);
 
 // ensure the process terminates gracefully when an error occurs.
 process.on('uncaughtException', (e) => {
