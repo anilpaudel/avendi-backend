@@ -13,8 +13,9 @@ const RefreshToken = require('../models/refresh_token');
 async function generateAccessAndRefreshTokens(data) {
   const oldRefreshToken = await RefreshToken.findActiveToken(data._id);
 
-  await revoke(oldRefreshToken.token);
-
+  if (oldRefreshToken) {
+    await revoke(oldRefreshToken.token);
+  }
   const refreshTokenData = { data: data, isRefreshToken: true };
   const accessTokenData = { data: data };
 
