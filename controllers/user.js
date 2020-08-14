@@ -88,7 +88,7 @@ exports.deleteUser = async (req, res, next) => {
 
     await userService.deleteUser(userId);
 
-    res.status(HttpStatus.OK);
+    res.status(HttpStatus.OK).json({});
   } catch (err) {
     next(err);
   }

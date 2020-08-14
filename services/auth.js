@@ -1,8 +1,12 @@
 const jwt = require('../utils/jwt');
 
 const config = require('../config/env');
-const parseSecond = require('../utils/jwt').parseJwtTimeToSecond;
+const User = require('../models/user');
 const RefreshToken = require('../models/refresh_token');
+const authMessage = require('../constants/messages').AUTH;
+const parseSecond = require('../utils/jwt').parseJwtTimeToSecond;
+const AuthenticationError = require('../lib/errors/authentication');
+
 /**
  * Generates access token and refresh token.
  * Insert refresh token into the database.
@@ -50,12 +54,28 @@ async function refreshToken(token) {
     config.jwt.refreshTokenSignOptions
   );
 
-  const accessToken = await generateAccessToken(data);
+  const user = await verifyDecodedToken(data);
+  const accessToken = await generateAccessToken(user);
 
   return {
     accessToken,
-    data,
+    user,
   };
+}
+
+/**
+ * Verify token consitency.
+ *
+ * @param {Object} data
+ * @returns {String}
+ */
+async function verifyDecodedToken(data) {
+  const user = await User.fetchById(data.data._id);
+
+  if (!user) {
+    throw new AuthenticationError(authMessage.invalid);
+  }
+  return user;
 }
 
 /**
@@ -80,8 +100,9 @@ async function revoke(token) {
 }
 
 module.exports = {
-  generateAccessAndRefreshTokens,
-  refreshToken,
-  generateAccessToken,
   revoke,
+  refreshToken,
+  verifyDecodedToken,
+  generateAccessToken,
+  generateAccessAndRefreshTokens,
 };

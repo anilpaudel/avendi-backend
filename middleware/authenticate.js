@@ -1,8 +1,8 @@
 const config = require('../config/env');
 const jwtUtils = require('../utils/jwt');
-const AuthenticationError = require('../lib/errors/authentication');
+const authService = require('../services/auth');
 const authMessage = require('../constants/messages').AUTH;
-
+const AuthenticationError = require('../lib/errors/authentication');
 /**
  * Extract token from headers in http request.
  *
@@ -38,7 +38,7 @@ async function fetchUserByToken(token) {
     config.jwt.signOptions
   );
 
-  return data;
+  return authService.verifyDecodedToken(data);
 }
 
 /**
