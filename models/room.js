@@ -13,6 +13,11 @@ class Room extends Model {
 
     super(model);
   }
+
+  fetchAll() {
+    return this.model.find();
+  }
+  
 }
 
 module.exports = new Room();

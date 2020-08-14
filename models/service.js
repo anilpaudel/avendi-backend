@@ -13,6 +13,10 @@ class Service extends Model {
 
     super(model);
   }
+
+  fetchAll() {
+    return this.model.find();
+  }
 }
 
 module.exports = new Service();
