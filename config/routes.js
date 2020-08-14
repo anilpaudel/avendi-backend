@@ -18,6 +18,8 @@ const foodMenuRoutes = require('../routes/foodMenu');
 const requestRoutes = require('../routes/guestRequest');
 const extensionRoutes = require('../routes/guestExtension');
 
+const userController = require('../controllers/user');
+
 /**
  * Contains public API routes for the application.
  */
@@ -34,7 +36,8 @@ publicRouter.get('/', (_, res) => {
  * POST /api/auth/login
  */
 publicRouter.post('/auth/login', auth.login);
-publicRouter.post("/auth/refresh", auth.refresh)
+publicRouter.post('/auth/refresh', auth.refresh);
+publicRouter.post('/user', userController.create);
 
 /**
  * Contains secured API routes for the application.
@@ -45,7 +48,7 @@ const privateRouter = Router();
  * Authentication middleware for private routes.
  */
 privateRouter.use(authenticateUser);
-privateRouter.use('/users', userRoutes);
+privateRouter.use('/user', userRoutes);
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);
 privateRouter.use('/service', serviceRoutes);
@@ -54,4 +57,4 @@ privateRouter.use('/category', categoryRoutes);
 privateRouter.use('/feedback', feedbackRoutes);
 privateRouter.use('/extension', extensionRoutes);
 
-module.exports = {publicRouter, privateRouter}
+module.exports = { publicRouter, privateRouter };
