@@ -1,33 +1,32 @@
 const { Router } = require('express');
 
-const router = Router();
+const roomController = require('../controllers/room');
 
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
+const router = Router();
 
 /**
  * GET /api/room/
  */
-router.get('/', tempController);
+router.get('/', roomController.fetchAll);
 
 /**
  * GET /api/room/:roomID
  */
-router.get('/:roomID', tempController);
+router.get('/:roomID', roomController.fetchById);
 
 /**
  * POST /api/room/
  */
-router.post('/', tempController);
+router.post('/', roomController.create);
 
 /**
  * DELETE /api/room/:roomID
  */
-router.delete('/:roomID', tempController);
+router.delete('/:roomID', roomController.deleteRoom);
 
 /**
  * PUT /api/room/:roomID
  */
-router.put('/:roomID', tempController);
+router.put('/:roomID', roomController.updateRoom);
 
 module.exports = router;
