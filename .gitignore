@@ -24,7 +24,8 @@ test/artifacts/
 
 # ignore configuration
 .env.production
-.env
+.env.*
+!.env.example
 
 # ignore visual studio files
 .vscode/*

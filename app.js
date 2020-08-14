@@ -41,7 +41,7 @@ function configureEnvironmentVariables() {
   const env = process.env.NODE_ENV.toLowerCase();
 
   // decode the file path for the environmental variables.
-  const dotfile = `server/.env.${env}`.trim();
+  const dotfile = `./.env.${env}`.trim();
 
   // load the environmental variables into process using the dotenv module
   dotEnv.config({ path: dotfile });

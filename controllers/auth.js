@@ -8,26 +8,34 @@
  */
 
 const _ = require('lodash');
-//const q = require('q');
-//const db = require('../lib/db');
-const Unauthorized = require('../lib/errors/Unauthorized');
+const HttpStatus = require('http-status-codes');
 
-// POST /auth/login
-exports.login = loginRoute;
+const userService = require('../services/user');
+const authService = require('../services/auth');
 
-function loginRoute(req, res, next) {
-  const { username, password } = req.body;
-  login(username, password)
-    .then(session => {
-      // bind the session variables
-      _.merge(req.session, session);
+const AuthenticationError = require('../lib/errors/authentication');
 
-      // send the session data back to the client
-      res.status(200).json(session);
-    })
-    .catch(next);
-}
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userService.authenticate(email, password);
 
-async function login(username, password) {
-  return {}
+    const data = await authService.generateAccessAndRefreshTokens(user);
+
+    res.status(HttpStatus.OK).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.refresh = async (req,res,next) => {
+  try{
+    const { refreshToken } = req.body;
+    console.log(refreshToken)
+    const data = await authService.refreshToken(refreshToken);
+
+    res.status(HttpStatus.OK).json({ data });
+  }catch(err){
+    next(err)
+  }
 }

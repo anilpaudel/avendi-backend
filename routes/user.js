@@ -1,32 +1,35 @@
 const { Router } = require('express');
 
+const userController = require('../controllers/user');
+
 const router = Router();
 
-const tempController = (req, res) =>
+const tempController = (req, res) => {
+  throw new Error();
   res.status(200).json({ message: 'Route Working. Need to implement!' });
-
+};
 /**
- * GET /api/users/
+ * GET /api/user/
  */
-router.get('/', tempController);
+router.get('/', userController.fetchAll);
 
 /**
- * GET /api/users/:userId
+ * GET /api/user/:userId
  */
 router.get('/:userId', tempController);
 
 /**
- * POST /api/users/
+ * POST /api/user/
  */
-router.post('/', tempController);
+router.post('/', userController.create);
 
 /**
- * DELETE /api/users/:userId
+ * DELETE /api/user/:userId
  */
 router.delete('/:userId', tempController);
 
 /**
- * PUT /api/users/:userId
+ * PUT /api/user/:userId
  */
 router.put('/:userId', tempController);
 

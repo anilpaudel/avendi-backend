@@ -1,6 +1,6 @@
 const mongoose = require('../config/database');
 
-const Model = require('./baseModel');
+const Model = require('./base_model');
 const categorySchema = require('../schemas/category');
 const { collectionNames, createSchema } = require('../schemas/index');
 

@@ -1,12 +1,12 @@
 const HttpStatus = require('http-status-codes');
 const MongooseError = require('mongoose').Error;
 
-const CustomError = '../lib/errors/customError';
-const NotFoundError = '../lib/errors/notFound.js';
-const ForbiddenError = '../lib/errors/forbidden.js';
-const ValidationError = '../lib/errors/validation.js';
-const AuthenticationError = '../lib/errors/authentication.js';
-const ServiceUnavailableError = '../lib/errors/serviceUnavailable.js';
+const CustomError = require('../lib/errors/customError');
+const NotFoundError = require('../lib/errors/notFound');
+const ForbiddenError = require('../lib/errors/forbidden');
+const ValidationError = require('../lib/errors/validation');
+const AuthenticationError = require('../lib/errors/authentication');
+const ServiceUnavailableError = require('../lib/errors/serviceUnavailable');
 
 /**
  * Build error response for validation errors.
@@ -30,6 +30,13 @@ function buildError(err) {
     const response = {
       code: HttpStatus.BAD_REQUEST,
       message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
+      details: Object.entries(err.errors).map((value) => {
+        return {
+          field: value[0],
+          message: value[1].message,
+          kind: value[1].kind,
+        };
+      }),
     };
 
     return response;

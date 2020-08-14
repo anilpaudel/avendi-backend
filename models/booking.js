@@ -1,6 +1,6 @@
 const mongoose = require('../services/database');
 
-const Model = require('./baseModel');
+const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
 const { collectionNames, createSchema } = require('../schemas/index');
 

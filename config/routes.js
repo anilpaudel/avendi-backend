@@ -34,6 +34,7 @@ publicRouter.get('/', (_, res) => {
  * POST /api/auth/login
  */
 publicRouter.post('/auth/login', auth.login);
+publicRouter.post("/auth/refresh", auth.refresh)
 
 /**
  * Contains secured API routes for the application.
@@ -44,7 +45,6 @@ const privateRouter = Router();
  * Authentication middleware for private routes.
  */
 privateRouter.use(authenticateUser);
-
 privateRouter.use('/user', userRoutes);
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);

@@ -23,4 +23,5 @@ exports.collectionNames = {
   GUEST_REQUEST: 'GuestRequest',
   FOOD_MENU: 'FoodMenu',
   CATEGORY: 'Category',
+  REFRESH_TOKEN: 'refreshToken',
 };
