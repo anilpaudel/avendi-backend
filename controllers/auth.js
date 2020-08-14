@@ -14,6 +14,7 @@ const userService = require('../services/user');
 const authService = require('../services/auth');
 
 const AuthenticationError = require('../lib/errors/authentication');
+const authMessage = require('../constants/messages').AUTH;
 
 exports.login = async (req, res, next) => {
   try {
@@ -28,14 +29,18 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.refresh = async (req,res,next) => {
-  try{
+exports.refresh = async (req, res, next) => {
+  try {
     const { refreshToken } = req.body;
-    console.log(refreshToken)
+
+    if (!refreshToken) {
+      throw new AuthenticationError(authMessage.emptyToken);
+    }
+
     const data = await authService.refreshToken(refreshToken);
 
     res.status(HttpStatus.OK).json({ data });
-  }catch(err){
-    next(err)
+  } catch (err) {
+    next(err);
   }
-}
+};
