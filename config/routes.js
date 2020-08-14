@@ -45,7 +45,7 @@ const privateRouter = Router();
  * Authentication middleware for private routes.
  */
 privateRouter.use(authenticateUser);
-privateRouter.use('/user', userRoutes);
+privateRouter.use('/users', userRoutes);
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);
 privateRouter.use('/service', serviceRoutes);
