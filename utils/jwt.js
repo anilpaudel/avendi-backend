@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const config = require('../config/env');
-const tokenMessage = require('../constants/messages').AUTH;
+const tokenMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 
 /**

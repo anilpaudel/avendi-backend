@@ -35,7 +35,7 @@ exports.configure = function configure(app) {
 
   // http logger setup
   // options: combined | common | dev | short | tiny
-  app.use(morgan('short', { stream }));
+  app.use(morgan('tiny'));
 
   /**
    * @function overrideIndexCacheHeaders

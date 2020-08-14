@@ -10,9 +10,9 @@ const router = Router();
 router.get('/', roomController.fetchAll);
 
 /**
- * GET /api/room/:roomID
+ * GET /api/room/:roomId
  */
-router.get('/:roomID', roomController.fetchById);
+router.get('/:roomId', roomController.fetchById);
 
 /**
  * POST /api/room/
@@ -20,13 +20,13 @@ router.get('/:roomID', roomController.fetchById);
 router.post('/', roomController.create);
 
 /**
- * DELETE /api/room/:roomID
+ * DELETE /api/room/:roomId
  */
-router.delete('/:roomID', roomController.deleteRoom);
+router.delete('/:roomId', roomController.deleteRoom);
 
 /**
- * PUT /api/room/:roomID
+ * PUT /api/room/:roomId
  */
-router.put('/:roomID', roomController.updateRoom);
+router.put('/:roomId', roomController.updateRoom);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const jwt = require('../utils/jwt');
 const config = require('../config/env');
 const User = require('../models/user');
 const RefreshToken = require('../models/refresh_token');
-const authMessage = require('../constants/messages').AUTH;
+const authMessage = require('../constants/errorMessages').AUTH;
 const parseSecond = require('../utils/jwt').parseJwtTimeToSecond;
 const AuthenticationError = require('../lib/errors/authentication');
 

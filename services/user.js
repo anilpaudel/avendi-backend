@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const AuthenticationError = require('../lib/errors/authentication');
 const user = require('../models/user');
-const authMessage = require('../constants/messages').AUTH;
+const authMessage = require('../constants/errorMessages').AUTH;
 
 exports.createUser = function (payload) {
   try {

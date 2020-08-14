@@ -1,7 +1,7 @@
 const config = require('../config/env');
 const jwtUtils = require('../utils/jwt');
 const authService = require('../services/auth');
-const authMessage = require('../constants/messages').AUTH;
+const authMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 /**
  * Extract token from headers in http request.

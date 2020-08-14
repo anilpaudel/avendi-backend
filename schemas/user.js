@@ -1,9 +1,4 @@
-// can add/change the user types as required.
-const USER_TYPE = {
-  SUPER_ADMIN: 'superAdmin',
-  ADMIN: 'admin',
-  EMPLOYEE: 'employee',
-};
+const { USER_TYPE } = require('../constants/user');
 
 module.exports = {
   firstName: { type: String, required: true },

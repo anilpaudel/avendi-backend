@@ -14,7 +14,7 @@ const userService = require('../services/user');
 const authService = require('../services/auth');
 
 const AuthenticationError = require('../lib/errors/authentication');
-const authMessage = require('../constants/messages').AUTH;
+const authMessage = require('../constants/errorMessages').AUTH;
 
 exports.login = async (req, res, next) => {
   try {

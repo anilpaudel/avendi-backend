@@ -49,7 +49,7 @@ class Model {
    * @returns {Promise}
    */
   fetchById (id) {
-    return this.model.find({ _id: id })
+    return this.model.findById(id)
   }
 }
 
