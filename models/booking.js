@@ -1,4 +1,4 @@
-const mongoose = require('../services/database');
+const mongoose = require('../config/database');
 
 const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
@@ -12,6 +12,9 @@ class Booking extends Model {
     );
 
     super(model);
+  }
+  fetchAll() {
+    return this.model.find();
   }
 }
 

@@ -1,33 +1,21 @@
 const { Router } = require('express');
+const bookingController = require('../controllers/booking');
 
 const router = Router();
-
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
 
 /**
  * GET /api/booking/
  */
-router.get('/', tempController);
-
-/**
- * GET /api/booking/:bookingId
- */
-router.get('/:bookingId', tempController);
+router.get('/', bookingController.fetchAll);
 
 /**
  * POST /api/booking/
  */
-router.post('/', tempController);
-
-/**
- * DELETE /api/booking/:bookingId
- */
-router.delete('/:bookingId', tempController);
+router.post('/', bookingController.create);
 
 /**
  * PUT /api/booking/:bookingId
  */
-router.put('/:bookingId', tempController);
+router.put('/:bookingId', bookingController.updateBooking);
 
 module.exports = router;
