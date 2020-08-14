@@ -39,7 +39,6 @@ class RefreshToken extends Model {
   }
 
   findActiveToken(userId) {
-    console.log(userId);
     return this.model.findOne({
       userId,
       revoked: false,

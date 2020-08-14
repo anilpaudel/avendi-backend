@@ -16,6 +16,7 @@ const ServiceUnavailableError = require('../lib/errors/serviceUnavailable');
  */
 function buildError(err) {
   // Validation errors
+  console.log(err);
   if (err.isJoi) {
     const response = {
       code: HttpStatus.BAD_REQUEST,

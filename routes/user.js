@@ -4,10 +4,6 @@ const userController = require('../controllers/user');
 
 const router = Router();
 
-const tempController = (req, res) => {
-  throw new Error();
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
-};
 /**
  * GET /api/user/
  */
@@ -16,7 +12,7 @@ router.get('/', userController.fetchAll);
 /**
  * GET /api/user/:userId
  */
-router.get('/:userId', tempController);
+router.get('/:userId', userController.fetchById);
 
 /**
  * POST /api/user/
@@ -26,11 +22,11 @@ router.post('/', userController.create);
 /**
  * DELETE /api/user/:userId
  */
-router.delete('/:userId', tempController);
+router.delete('/:userId', userController.deleteUser);
 
 /**
  * PUT /api/user/:userId
  */
-router.put('/:userId', tempController);
+router.put('/:userId', userController.updateUser);
 
 module.exports = router;

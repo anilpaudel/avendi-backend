@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
 const AuthenticationError = require('../lib/errors/authentication');
+const user = require('../models/user');
 const authMessage = require('../constants/messages').AUTH;
 
 exports.createUser = function (payload) {
@@ -19,6 +20,8 @@ exports.createUser = function (payload) {
 
 exports.fetchAll = () => User.fetchAll();
 
+exports.fetchById = (userId) => User.fetchById(userId);
+
 exports.authenticate = async function (email, password) {
   const user = await User.fetchByEmail(email);
 
@@ -28,3 +31,8 @@ exports.authenticate = async function (email, password) {
 
   return user;
 };
+
+exports.updateUser = (userId, updateData) =>
+  User.updateById(userId, updateData);
+
+exports.deleteUser = (userId) => User.deleteById(userId)
