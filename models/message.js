@@ -24,6 +24,13 @@ class Message extends Model {
       .populate('to ')
       .populate({ path: 'from', select: 'fullName -_id' }); // to get only fullName and not _id
   }
+
+  fetchAll(staffId, guestId) {
+    return this.model
+      .find()
+      .populate('to ')
+      .populate({ path: 'from', select: 'fullName -_id' }); // to get only fullName and not _id
+  }
 }
 
 module.exports = new Message();
