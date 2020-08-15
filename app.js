@@ -19,6 +19,7 @@ configureEnvironmentVariables();
 
 const http = require('http');
 const express = require('express');
+const socketIo = require('socket.io');
 const debug = require('debug')('app');
 
 const app = express();
@@ -59,15 +60,18 @@ function configureServer() {
   const mode = process.env.NODE_ENV;
 
   // create the server
-  http.createServer(app).listen(port, () => {
+  const expressServer = http.createServer(app).listen(port, () => {
     console.log(
       `configureServer(): Server started in mode ${mode} on port ${port}.`
     );
   });
+  return expressServer;
 }
 
 // run configuration tools
-configureServer();
+const expressServer = configureServer();
+const io = socketIo(expressServer);
+require('./config/socket.js').configure(io);
 
 // db
 require('./config/database');

@@ -6,7 +6,7 @@ const { Router } = require('express');
 
 // unclassified routes
 const auth = require('../controllers/auth');
-const authenticateUser = require('../middleware/authenticate');
+const authenticateUser = require('../middleware/authenticate').authenticateUser;
 
 const userRoutes = require('../routes/user');
 const roomRoutes = require('../routes/room');
