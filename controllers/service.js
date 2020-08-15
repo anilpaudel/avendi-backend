@@ -68,7 +68,7 @@ exports.deleteService = async (req, res, next) => {
 
     await serviceService.deleteService(serviceId);
 
-    res.status(HttpStatus.OK);
+    res.status(HttpStatus.OK).json({});
   } catch (err) {
     next(err);
   }

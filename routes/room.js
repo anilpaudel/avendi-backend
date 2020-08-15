@@ -1,6 +1,8 @@
 const { Router } = require('express');
 
 const roomController = require('../controllers/room');
+const validateRequest = require('../middleware/requestValidator');
+const roomValidationSchema = require('../validators/roomValidator');
 
 const router = Router();
 
@@ -17,7 +19,11 @@ router.get('/:roomId', roomController.fetchById);
 /**
  * POST /api/room/
  */
-router.post('/', roomController.create);
+router.post(
+  '/',
+  validateRequest(roomValidationSchema.create),
+  roomController.create
+);
 
 /**
  * DELETE /api/room/:roomId
@@ -27,6 +33,10 @@ router.delete('/:roomId', roomController.deleteRoom);
 /**
  * PUT /api/room/:roomId
  */
-router.put('/:roomId', roomController.updateRoom);
+router.put(
+  '/:roomId',
+  validateRequest(roomValidationSchema.update),
+  roomController.updateRoom
+);
 
 module.exports = router;

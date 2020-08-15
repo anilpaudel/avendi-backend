@@ -19,6 +19,8 @@ const requestRoutes = require('../routes/guestRequest');
 const extensionRoutes = require('../routes/guestExtension');
 
 const userController = require('../controllers/user');
+const validateRequest = require("../middleware/requestValidator")
+const userValidationSchema = require('../validators/userValidator');
 
 /**
  * Contains public API routes for the application.
@@ -37,7 +39,7 @@ publicRouter.get('/', (_, res) => {
  */
 publicRouter.post('/auth/login', auth.login);
 publicRouter.post('/auth/refresh', auth.refresh);
-publicRouter.post('/user', userController.create);
+publicRouter.post('/user',validateRequest(userValidationSchema.create), userController.create);
 
 /**
  * Contains secured API routes for the application.

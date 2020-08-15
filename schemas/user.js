@@ -9,7 +9,6 @@ module.exports = {
   type: {
     type: String,
     required: true,
-    default: USER_TYPE.EMPLOYEE,
     enum: Object.keys(USER_TYPE).map((key) => USER_TYPE[key]),
   },
   department: { type: String, required: true }, // can be used enum too to make sure only predefined departments are entered

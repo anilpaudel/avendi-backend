@@ -23,6 +23,17 @@ function buildError(err) {
       message: HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
     };
 
+    if (process.env.NODE_ENV.toLowerCase() === 'dev') {
+      response.details =
+        err.details &&
+        err.details.map((err) => {
+          return {
+            message: err.message,
+            param: err.path.join('.'),
+          };
+        });
+    }
+
     return response;
   }
 

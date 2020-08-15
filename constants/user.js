@@ -1,7 +1,8 @@
 const USER_TYPE = {
   ADMIN: 'admin',
-  EMPLOYEE: 'employee',
-  SUPER_ADMIN: 'superAdmin',
+  STAFF: 'staff',
+  GUEST: 'guest',
+  SUPERVISOR: 'supervisor',
 };
 
 module.exports = {

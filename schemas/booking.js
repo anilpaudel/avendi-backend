@@ -17,5 +17,4 @@ module.exports = {
   dateCheckin: { type: Date, required: true },
   dateCheckout: { type: Date },
   creditCard: { type: Boolean },
-  status: { type: String, required: true }, // maybe enum?
 };
