@@ -1,9 +1,6 @@
-const BaseJoi = require('@hapi/joi');
-const Extension = require('@hapi/joi-date');
+const Joi = require('@hapi/joi');
 
 const USER_TYPE = require('../constants/user').USER_TYPE;
-
-const Joi = BaseJoi.extend(Extension);
 
 const create = Joi.object({
   firstName: Joi.string().label('First Name').trim().min(1).required(),
@@ -33,5 +30,5 @@ const update = Joi.object({
 
 module.exports = {
   create,
-  update
+  update,
 };

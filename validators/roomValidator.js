@@ -1,9 +1,5 @@
-const BaseJoi = require('@hapi/joi');
-const Extension = require('@hapi/joi-date');
+const Joi = require('@hapi/joi');
 const { ROOM_TYPES } = require('../constants/room');
-const BOOKING_STATUS = require('../constants/booking');
-
-const Joi = BaseJoi.extend(Extension);
 
 const create = Joi.object({
   number: Joi.number().label('Room number').positive().integer().required(),
@@ -17,9 +13,6 @@ const create = Joi.object({
     .label('type')
     .valid(...Object.keys(ROOM_TYPES).map((key) => ROOM_TYPES[key]))
     .required(),
-  status: Joi.string()
-    .label('type')
-    .valid(...Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key])),
 });
 
 const update = Joi.object({
@@ -28,9 +21,6 @@ const update = Joi.object({
   type: Joi.string()
     .label('type')
     .valid(...Object.keys(ROOM_TYPES).map((key) => ROOM_TYPES[key])),
-  status: Joi.string()
-    .label('type')
-    .valid(...Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key])),
 });
 
 module.exports = {

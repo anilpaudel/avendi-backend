@@ -16,6 +16,26 @@ class Booking extends Model {
   fetchAll() {
     return this.model.find();
   }
+
+  findPreviousBooking(roomId, newCheckinDate, newCheckoutDate) {
+    return this.model.findOne({
+      roomId: roomId,
+      $or: [
+        {
+          dateCheckin: {
+            $gte: newCheckinDate,
+            $lte: newCheckoutDate,
+          },
+        },
+        {
+          dateCheckout: {
+            $gte: newCheckinDate,
+            $lte: newCheckoutDate,
+          },
+        },
+      ],
+    });
+  }
 }
 
 module.exports = new Booking();

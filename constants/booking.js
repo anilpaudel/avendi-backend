@@ -4,4 +4,6 @@ const BOOKING_STATUS = {
   BOOKED: 'Booked',
 };
 
-module.exports = BOOKING_STATUS;
+module.exports = {
+  BOOKING_STATUS,
+};

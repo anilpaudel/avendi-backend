@@ -1,11 +1,12 @@
 const { Schema } = require('mongoose');
 
 const { collectionNames } = require('./index');
+const { BOOKING_STATUS } = require('../constants/booking');
 
 module.exports = {
   roomId: {
     type: Schema.Types.ObjectId,
-    ref: collectionNames.ROOM, // when we use ref need to make sure the collection name is same through out the project
+    ref: collectionNames.ROOM,
     required: true,
   },
   guestId: {
@@ -16,5 +17,10 @@ module.exports = {
   description: { type: String, maxLength: 500 },
   dateCheckin: { type: Date, required: true },
   dateCheckout: { type: Date },
+  status: {
+    type: String,
+    required: true,
+    enum: Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key]),
+  },
   creditCard: { type: Boolean },
 };
