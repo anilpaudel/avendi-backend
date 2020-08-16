@@ -3,6 +3,9 @@ const { Router } = require('express');
 const userController = require('../controllers/user');
 const validateRequest = require('../middleware/requestValidator');
 const userValidationSchema = require('../validators/userValidator');
+const {
+  parseMultiPartFormData,
+} = require('../middleware/multiPartFormHandler');
 
 const router = Router();
 
@@ -37,6 +40,15 @@ router.put(
   '/:userId',
   validateRequest(userValidationSchema.update),
   userController.updateUser
+);
+
+/**
+ * POST /api/:userId/image
+ */
+router.post(
+  '/:userId/image',
+  parseMultiPartFormData,
+  userController.uploadImage
 );
 
 module.exports = router;

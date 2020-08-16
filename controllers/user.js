@@ -110,3 +110,23 @@ exports.deleteUser = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * Upload image to user.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+exports.uploadImage = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const file = req.file;
+
+    const data = await userService.uploadUserImage(userId, file);
+
+    res.status(HttpStatus.OK).json(data);
+  } catch (err) {
+    next(err);
+  }
+};

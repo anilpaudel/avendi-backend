@@ -12,4 +12,5 @@ module.exports = {
     enum: Object.keys(USER_TYPE).map((key) => USER_TYPE[key]),
   },
   currency: { type: String },
+  imageUrl: { type: String },
 };

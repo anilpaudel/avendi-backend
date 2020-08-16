@@ -20,6 +20,14 @@ const config = {
       expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRE,
     },
   },
+  aws: {
+    accessConfig: {
+      accessKeyId: process.env.ACCESS_KEY_ID,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    },
+    imageBucketName: process.env.BUCKET_NAME,
+    imageFolder: process.env.IMAGE_FOLDER,
+  },
 };
 
 module.exports = config;

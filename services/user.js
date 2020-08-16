@@ -1,13 +1,17 @@
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
+const config = require('../config/env');
 const Staff = require('../models/staff');
 const Counter = require('../models/counter');
-const AuthenticationError = require('../lib/errors/authentication');
 const { USER_TYPE } = require('../constants/user');
+const { uploadToS3 } = require('../utils/uploadToS3');
+const { addTimestampToFilename } = require('../utils/string');
 const authMessage = require('../constants/errorMessages').AUTH;
+const AuthenticationError = require('../lib/errors/authentication');
+const CustomError = require('../lib/errors/customError');
 
-exports.createUser = async function (payload) {
+async function createUser(payload) {
   try {
     const userData = {
       ...payload,
@@ -37,22 +41,25 @@ exports.createUser = async function (payload) {
 
     return user;
   } catch (err) {
-    console.log(err);
     throw err;
   }
-};
-
-exports.fetchAll = () => User.fetchAll();
-
-exports.fetchAllTeam = async function (){
-  const staff = await Staff.fetchAll()
-
-  return staff
 }
 
-exports.fetchById = (userId) => User.fetchById(userId);
+function fetchAll() {
+  return User.fetchAll();
+}
 
-exports.authenticate = async function (email, password) {
+async function fetchAllTeam() {
+  const staff = await Staff.fetchAll();
+
+  return staff;
+}
+
+function fetchById(userId) {
+  return User.fetchById(userId);
+}
+
+async function authenticate(email, password) {
   const user = await User.fetchByEmail(email);
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
@@ -60,9 +67,46 @@ exports.authenticate = async function (email, password) {
   }
 
   return user;
+}
+
+function updateUser(userId, updateData) {
+  return User.updateById(userId, updateData);
+}
+
+function deleteUser(userId) {
+  return User.deleteById(userId);
+}
+
+async function uploadUserImage(userId, file) {
+  try {
+    const imageBucketName = config.aws.imageBucketName;
+    const folderName = config.aws.imageFolder;
+    const filename = addTimestampToFilename(file.originalname);
+
+    const uploadImageUrl = await uploadToS3(
+      imageBucketName,
+      file.buffer,
+      folderName ? `${folderName}/${filename}` : `${filename}`
+    );
+
+    const user = await User.updateById(userId, { imageUrl: uploadImageUrl });
+
+    return user;
+  } catch (err) {
+    if (err.statusCode === 403) {
+      throw new CustomError('Image upload access denied.', 403);
+    }
+    throw err;
+  }
+}
+
+module.exports = {
+  createUser,
+  fetchAll,
+  fetchAllTeam,
+  fetchById,
+  authenticate,
+  updateUser,
+  deleteUser,
+  uploadUserImage,
 };
-
-exports.updateUser = (userId, updateData) =>
-  User.updateById(userId, updateData);
-
-exports.deleteUser = (userId) => User.deleteById(userId);
