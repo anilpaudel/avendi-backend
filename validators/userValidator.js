@@ -12,7 +12,11 @@ const create = Joi.object({
     .label('type')
     .valid(...Object.keys(USER_TYPE).map((key) => USER_TYPE[key]))
     .required(),
-  department: Joi.string().label('Department').required(),
+  department: Joi.string().label('Department').when('type', {
+    is: USER_TYPE.GUEST,
+    then: Joi.optional(),
+    otherwise: Joi.required(),
+  }),
   currency: Joi.string().label('Currency'),
 });
 

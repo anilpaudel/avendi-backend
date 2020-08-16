@@ -53,7 +53,7 @@ const privateRouter = Router();
 /**
  * Authentication middleware for private routes.
  */
-privateRouter.use(authenticateUser);
+privateRouter.use(authenticateUser); // authentication middleware.
 privateRouter.use('/user', userRoutes);
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);
@@ -62,5 +62,8 @@ privateRouter.use('/request', requestRoutes);
 privateRouter.use('/category', categoryRoutes);
 privateRouter.use('/feedback', feedbackRoutes);
 privateRouter.use('/extension', extensionRoutes);
+
+// instant routes no need for separate routes file
+privateRouter.get('/team', userController.fetchAllTeam);
 
 module.exports = { publicRouter, privateRouter };

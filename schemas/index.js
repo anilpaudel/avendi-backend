@@ -24,4 +24,6 @@ exports.collectionNames = {
   FOOD_MENU: 'FoodMenu',
   CATEGORY: 'Category',
   REFRESH_TOKEN: 'refreshToken',
+  STAFF: 'staff',
+  COUNTER: 'counter',
 };

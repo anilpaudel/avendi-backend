@@ -33,8 +33,6 @@ async function createBooking(payload) {
       data.dateCheckout
     );
 
-    console.log(bookingStatus);
-
     if (
       bookingStatus &&
       (bookingStatus.status === BOOKING_STATUS.BOOKED ||

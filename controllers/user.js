@@ -37,6 +37,23 @@ exports.fetchAll = async (req, res, next) => {
 };
 
 /**
+ * Get all team members.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+exports.fetchAllTeam = async (req, res, next) => {
+  try {
+    const data = await userService.fetchAllTeam();
+
+    res.status(HttpStatus.OK).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * Get user by ID.
  *
  * @param {Object} req
