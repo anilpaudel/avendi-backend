@@ -88,7 +88,7 @@ exports.deleteRoom = async (req, res, next) => {
 
     await roomService.deleteRoom(roomId);
 
-    res.status(HttpStatus.OK);
+    res.status(HttpStatus.OK).json({});
   } catch (err) {
     next(err);
   }

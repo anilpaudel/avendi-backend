@@ -1,4 +1,3 @@
-
 const Message = require('../models/message');
 
 exports.createMessage = function (payload) {
@@ -13,8 +12,9 @@ exports.createMessage = function (payload) {
   }
 };
 
-exports.fetchAll = (staffId, guestId) => Message.fetchAll(staffId, guestId);
+exports.fetchAll = (staffId, guestId, filters) =>
+  Message.fetchAll(staffId, guestId, filters);
 
 exports.fetchById = (messageId) => Message.fetchById(messageId);
 
-exports.deleteRoom = (messageId) => Room.deleteById(messageId)
+exports.deleteRoom = (messageId) => Room.deleteById(messageId);
