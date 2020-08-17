@@ -26,4 +26,5 @@ exports.collectionNames = {
   REFRESH_TOKEN: 'refreshToken',
   STAFF: 'staff',
   COUNTER: 'counter',
+  EXTENSION_RATE: 'extensionRate'
 };

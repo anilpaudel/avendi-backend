@@ -1,15 +1,12 @@
 const { Router } = require('express');
 
-const requestController = require('../controllers/request');
-const validateUserType = require('../middleware/roleValidator');
 const { USER_TYPE } = require('../constants/user');
+const requestController = require('../controllers/guestRequest');
+const validateUserType = require('../middleware/roleValidator');
 const requestValidator = require('../middleware/requestValidator');
 const requestValidationSchema = require('../validators/guestRequestValidator');
 
 const router = Router();
-
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
 
 /**
  * GET /api/request/
@@ -27,7 +24,7 @@ router.get('/:requestId', requestController.fetchById);
 router.post(
   '/',
   validateUserType([USER_TYPE.GUEST]),
-  requestValidator(requestValidationSchema.update),
+  requestValidator(requestValidationSchema.create),
   requestController.create
 ); //only guest can create request
 
@@ -43,6 +40,14 @@ router.put(
   '/:requestId',
   requestValidator(requestValidationSchema.update),
   requestController.updateRequest
+);
+
+/**
+ * PUT /api/request/:requestId/assign
+ */
+router.put(
+  '/:requestId/assign',
+  requestController.assignToRequest
 );
 
 module.exports = router;

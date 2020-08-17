@@ -1,6 +1,5 @@
 const BaseJoi = require('@hapi/joi');
 const Extension = require('@hapi/joi-date');
-const { BOOKING_STATUS } = require('../constants/booking');
 const { REQUEST_STATUS } = require('../constants/guestRequest');
 
 const Joi = BaseJoi.extend(Extension);
@@ -14,11 +13,7 @@ const create = Joi.object({
     .label('Status')
     .valid(...Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key]))
     .optional(),
-  assignedTo: Joi.string().label('Assigned To').when('status', {
-    is: REQUEST_STATUS.NOT_ASSIGNED,
-    then: Joi.optional(),
-    otherwise: Joi.required(),
-  }),
+  assignedTo: Joi.string().label('Assigned To').optional(),
 });
 
 const update = Joi.object({
@@ -29,7 +24,6 @@ const update = Joi.object({
   status: Joi.string()
     .label('Status')
     .valid(...Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key])),
-  assignedTo: Joi.string().label('Assigned To'),
 });
 
 module.exports = {

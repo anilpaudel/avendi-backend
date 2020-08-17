@@ -1,14 +1,14 @@
 const mongoose = require('../config/database');
 
 const Model = require('./base_model');
-const guestExtenstionSchema = require('../schemas/guestExtension');
+const extensionRateSchema = require('../schemas/extensionRate');
 const { collectionNames, createSchema } = require('../schemas/index');
 
-class GuestExtension extends Model {
+class ExtensionRate extends Model {
   constructor() {
     const model = mongoose.model(
-      collectionNames.GUEST_EXTENSION,
-      createSchema(guestExtenstionSchema, { timestamps: true })
+      collectionNames.CATEGORY,
+      createSchema(extensionRateSchema, { timestamps: true })
     );
 
     super(model);
@@ -19,4 +19,4 @@ class GuestExtension extends Model {
   }
 }
 
-module.exports = new GuestExtension();
+module.exports = new ExtensionRate();

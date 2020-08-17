@@ -21,8 +21,7 @@ const create = Joi.object({
     .required(),
   status: Joi.string()
     .label('Booking Status')
-    .valid(...Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key]))
-    .required(),
+    .valid(...Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key])),
 });
 
 const update = Joi.object({

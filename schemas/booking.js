@@ -19,7 +19,7 @@ module.exports = {
   dateCheckout: { type: Date },
   status: {
     type: String,
-    required: true,
+    default: BOOKING_STATUS.BOOKED,
     enum: Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key]),
   },
   creditCard: { type: Boolean },

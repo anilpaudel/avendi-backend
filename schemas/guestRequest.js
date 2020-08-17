@@ -20,7 +20,6 @@ module.exports = {
   completionBy: { type: String },
   status: {
     type: String,
-    required: true,
     default: REQUEST_STATUS.NOT_ASSIGNED,
     enum: Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key]),
   },

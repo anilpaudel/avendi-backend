@@ -1,33 +1,50 @@
 const { Router } = require('express');
 
+const { USER_TYPE } = require('../constants/user');
+const extensionController = require('../controllers/guestExtension');
+const validateUserType = require('../middleware/roleValidator');
+const requestValidator = require('../middleware/requestValidator');
+const extensionValidationSchema = require('../validators/guestExtensionValidator');
+
 const router = Router();
 
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
+/**
+ * GET /api/guest-extension/
+ */
+router.get('/', extensionController.fetchAll);
 
 /**
- * GET /api/extension/
+ * GET /api/guest-extension/:extensionId
  */
-router.get('/', tempController);
+router.get('/:extensionId', extensionController.fetchById);
 
 /**
- * GET /api/extension/:extensionId
+ * POST /api/guest-extension/
  */
-router.get('/:extensionId', tempController);
+router.post(
+  '/',
+  validateUserType([USER_TYPE.GUEST]),
+  requestValidator(extensionValidationSchema.create),
+  extensionController.create
+); //only guest can create guest-extension
 
 /**
- * POST /api/extension/
+ * DELETE /api/guest-extension/:extensionId
  */
-router.post('/', tempController);
+router.delete('/:extensionId', extensionController.deleteExtension);
 
 /**
- * DELETE /api/extension/:extensionId
+ * PUT /api/guest-extension/:extensionId
  */
-router.delete('/:extensionId', tempController);
+router.put(
+  '/:extensionId',
+  requestValidator(extensionValidationSchema.update),
+  extensionController.updateExtension
+);
 
 /**
- * PUT /api/extension/:extensionId
+ * PUT /api/guest-extension/:extensionId/assign
  */
-router.put('/:extensionId', tempController);
+router.put('/:extensionId/assign', extensionController.assignToExtension);
 
 module.exports = router;

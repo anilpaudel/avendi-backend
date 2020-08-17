@@ -1,6 +1,7 @@
 const HttpStatus = require('http-status-codes');
 
-const requestService = require('../services/request');
+const CustomError = require('../lib/errors/customError');
+const requestService = require('../services/guestRequest');
 
 /**
  * Add request.
@@ -57,6 +58,25 @@ exports.updateRequest = async (req, res, next) => {
     const updatePayload = req.body;
 
     const data = await requestService.updateRequest(requestId, updatePayload);
+    res.status(HttpStatus.OK).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Assign staff to request.
+ */
+exports.assignToRequest = async (req, res, next) => {
+  try {
+    const { requestId } = req.params;
+    const { assignTo } = req.body;
+
+    if (!assignTo) {
+      throw new CustomError('No assignTo user Id provided', 400);
+    }
+
+    const data = await requestService.assignStaffToRequest(requestId, assignTo);
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);

@@ -17,6 +17,7 @@ const feedbackRoutes = require('../routes/feedback');
 const foodMenuRoutes = require('../routes/foodMenu');
 const requestRoutes = require('../routes/guestRequest');
 const extensionRoutes = require('../routes/guestExtension');
+const extensionRateRoutes = require('../routes/extensionRate');
 
 const userController = require('../controllers/user');
 const validateRequest = require('../middleware/requestValidator');
@@ -58,10 +59,11 @@ privateRouter.use('/user', userRoutes);
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);
 privateRouter.use('/service', serviceRoutes);
-privateRouter.use('/request', requestRoutes);
 privateRouter.use('/category', categoryRoutes);
 privateRouter.use('/feedback', feedbackRoutes);
-privateRouter.use('/extension', extensionRoutes);
+privateRouter.use('/guest-request', requestRoutes);
+privateRouter.use('/guest-extension', extensionRoutes);
+privateRouter.use('/extension-rate', extensionRateRoutes);
 
 // instant routes no need for separate routes file
 privateRouter.get('/team', userController.fetchAllTeam);
