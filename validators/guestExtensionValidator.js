@@ -18,7 +18,8 @@ const create = Joi.object({
 
 const update = Joi.object({
   requestType: Joi.string().label('request type').trim().min(1).optional(),
-  extendedTo: Joi.date().label('Extended to').required(),
+  extendedTo: Joi.date().label('Extended to').optional(),
+  rateId: Joi.string().label('Rate id').trim().optional(),
   status: Joi.string().label('Status').optional(),
 });
 
