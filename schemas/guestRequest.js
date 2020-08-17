@@ -1,22 +1,27 @@
 const { Schema } = require('mongoose');
 
 const { collectionNames } = require('./index');
+const { REQUEST_STATUS } = require('../constants/guestRequest');
 
 module.exports = {
   bookingId: {
     type: Schema.Types.ObjectId,
-    ref: collectionNames.BOOKING, // when we use ref need to make sure the collection name is same through out the project
+    ref: collectionNames.BOOKING,
     required: true,
   },
-  type: { type: String },
-  requestType: { type: String },
+  type: { type: String, required: true },
+  requestType: { type: String, required: true },
   details: { type: String, maxLength: 500 },
-  requestedAt: { type: Date },
+  requestedAt: { type: Date, default: () => new Date() },
   assignedTo: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.USER,
-    required: true,
   },
   completionBy: { type: String },
-  status: { type: String, required: true }, // maybe enum?
+  status: {
+    type: String,
+    required: true,
+    default: REQUEST_STATUS.NOT_ASSIGNED,
+    enum: Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key]),
+  },
 };

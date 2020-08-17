@@ -40,9 +40,9 @@ async function createBooking(payload) {
     ) {
       throw new CustomError(bookingMessage.roomNotAvailable);
     }
-    // const bookedData = await Booking.save(data);
+    const bookedData = await Booking.save(data);
 
-    return {};
+    return bookedData;
   } catch (err) {
     console.log(err);
     throw err;

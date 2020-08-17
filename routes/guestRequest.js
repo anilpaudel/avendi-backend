@@ -1,5 +1,11 @@
 const { Router } = require('express');
 
+const requestController = require('../controllers/request');
+const validateUserType = require('../middleware/roleValidator');
+const { USER_TYPE } = require('../constants/user');
+const requestValidator = require('../middleware/requestValidator');
+const requestValidationSchema = require('../validators/guestRequestValidator');
+
 const router = Router();
 
 const tempController = (req, res) =>
@@ -8,26 +14,35 @@ const tempController = (req, res) =>
 /**
  * GET /api/request/
  */
-router.get('/', tempController);
+router.get('/', requestController.fetchAll);
 
 /**
  * GET /api/request/:requestId
  */
-router.get('/:requestId', tempController);
+router.get('/:requestId', requestController.fetchById);
 
 /**
  * POST /api/request/
  */
-router.post('/', tempController);
+router.post(
+  '/',
+  validateUserType([USER_TYPE.GUEST]),
+  requestValidator(requestValidationSchema.update),
+  requestController.create
+); //only guest can create request
 
 /**
  * DELETE /api/request/:requestId
  */
-router.delete('/:requestId', tempController);
+router.delete('/:requestId', requestController.deleteRequest);
 
 /**
  * PUT /api/request/:requestId
  */
-router.put('/:requestId', tempController);
+router.put(
+  '/:requestId',
+  requestValidator(requestValidationSchema.update),
+  requestController.updateRequest
+);
 
 module.exports = router;

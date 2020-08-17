@@ -3,6 +3,7 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { dateCheckout } = require('../schemas/booking');
 
 class Booking extends Model {
   constructor() {
@@ -15,6 +16,26 @@ class Booking extends Model {
   }
   fetchAll() {
     return this.model.find();
+  }
+
+  findActiveBooking(guestId) {
+    const currentDate = new Date();
+
+    return this.model.findOne({
+      guestId: guestId,
+      $or: [
+        {
+          dateCheckin: {
+            $lte: currentDate,
+          },
+        },
+        {
+          dateCheckout: {
+            $gte: currentDate,
+          },
+        },
+      ],
+    });
   }
 
   findPreviousBooking(roomId, newCheckinDate, newCheckoutDate) {

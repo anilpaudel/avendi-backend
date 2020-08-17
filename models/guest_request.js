@@ -13,6 +13,10 @@ class GuestRequest extends Model {
 
     super(model);
   }
+
+  fetchAll(type) {
+    return this.model.find({ type: type });
+  }
 }
 
 module.exports = new GuestRequest();
