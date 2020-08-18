@@ -64,6 +64,7 @@ privateRouter.use('/feedback', feedbackRoutes);
 privateRouter.use('/guest-request', requestRoutes);
 privateRouter.use('/guest-extension', extensionRoutes);
 privateRouter.use('/extension-rate', extensionRateRoutes);
+privateRouter.use('/food-menu', foodMenuRoutes);
 
 // instant routes no need for separate routes file
 privateRouter.get('/team', userController.fetchAllTeam);

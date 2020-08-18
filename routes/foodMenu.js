@@ -1,33 +1,32 @@
 const { Router } = require('express');
 
+const foodMenuController = require('../controllers/foodMenu');
+
 const router = Router();
 
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
+/**
+ * GET /api/food-menu/
+ */
+router.get('/', foodMenuController.fetchAll);
 
 /**
- * GET /api/foodmenu/
+ * GET /api/food-menu/:foodMenuId
  */
-router.get('/', tempController);
+router.get('/:foodMenuId', foodMenuController.fetchById);
 
 /**
- * GET /api/foodmenu/:foodmenuId
+ * POST /api/food-menu/
  */
-router.get('/:foodmenuId', tempController);
+router.post('/', foodMenuController.create);
 
 /**
- * POST /api/foodmenu/
+ * DELETE /api/food-menu/:foodMenuId
  */
-router.post('/', tempController);
+router.delete('/:foodMenuId', foodMenuController.deleteFoodMenu);
 
 /**
- * DELETE /api/foodmenu/:foodmenuId
+ * PUT /api/food-menu/:foodMenuId
  */
-router.delete('/:foodmenuId', tempController);
-
-/**
- * PUT /api/foodmenu/:foodmenuId
- */
-router.put('/:foodmenuId', tempController);
+router.put('/:foodMenuId', foodMenuController.updateFoodMenu);
 
 module.exports = router;
