@@ -1,13 +1,13 @@
 const mongoose = require('../config/database');
 
 const Model = require('./base_model');
-const categorySchema = require('../schemas/category');
+const categorySchema = require('../schemas/foodMenuCategory');
 const { collectionNames, createSchema } = require('../schemas/index');
 
-class Category extends Model {
+class FoodMenuCategory extends Model {
   constructor() {
     const model = mongoose.model(
-      collectionNames.CATEGORY,
+      collectionNames.FOOD_MENU_CATEGORY,
       createSchema(categorySchema, { timestamps: true })
     );
 
@@ -15,4 +15,4 @@ class Category extends Model {
   }
 }
 
-module.exports = new Category();
+module.exports = new FoodMenuCategory();

@@ -46,7 +46,7 @@ exports.updateFoodMenu = async (req, res, next) => {
   try {
     const { foodMenuId } = req.params;
     const updatePayload = req.body;
-    const data = await foodMenuService.updateFoodMenuId(foodMenuId, updatePayload);
+    const data = await foodMenuService.updateFoodMenu(foodMenuId, updatePayload);
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);
