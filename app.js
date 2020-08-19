@@ -18,6 +18,7 @@ const dotEnv = require('dotenv');
 configureEnvironmentVariables();
 
 const http = require('http');
+const cors = require('cors');
 const express = require('express');
 const socketIo = require('socket.io');
 const debug = require('debug')('app');
@@ -71,6 +72,7 @@ function configureServer() {
 // run configuration tools
 const expressServer = configureServer();
 const io = socketIo(expressServer);
+app.use(cors())
 require('./config/socket.js').configure(io);
 
 // db
