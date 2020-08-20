@@ -9,6 +9,7 @@ exports.createCategory = function (payload) {
     return Category.save(categoryData);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

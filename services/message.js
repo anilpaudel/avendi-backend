@@ -9,6 +9,7 @@ exports.createMessage = function (payload) {
     return Message.save(data);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

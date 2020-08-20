@@ -10,6 +10,7 @@ exports.createMenuCategory = function (payload) {
     return MenuCategory.save(data);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

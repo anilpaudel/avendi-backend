@@ -9,6 +9,7 @@ exports.createExtensionRate = function (payload) {
     return ExtensionRate.save(data);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

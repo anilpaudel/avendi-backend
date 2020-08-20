@@ -10,6 +10,7 @@ exports.createService = function (payload) {
     return Service.save(serviceData);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

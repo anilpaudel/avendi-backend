@@ -28,8 +28,8 @@ exports.createFeedback = async function (payload, guestId) {
       throw new ValidationError('Invalid Staff id provided.');
     }
 
-    const feedback = Feedback.save(feedbackData);
-    const message = Message.save({
+    const feedback = await Feedback.save(feedbackData);
+    const message = await Message.save({
       from: guestId,
       to: feedbackData.staffId,
       message: feedbackData.comment || feedbackData.rating,
@@ -38,6 +38,7 @@ exports.createFeedback = async function (payload, guestId) {
     return feedback;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

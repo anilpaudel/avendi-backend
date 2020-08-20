@@ -10,6 +10,7 @@ exports.createFoodMenu = function (payload) {
     return FoodMenu.save(data);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

@@ -12,6 +12,7 @@ exports.createRoom = function (payload) {
     return Room.save(roomData);
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
