@@ -17,15 +17,18 @@ exports.configure = function configure(io) {
       }catch(err){
         console.log("socket auth failed")
       }finally{
-        var messages = await messageService.fetchAll(user._id, socket.handshake.query.guest_id);
-        io.emit("init", { messages:messages  });
+        
+        socket.on("send_message", async data =>{
+          console.log("Received send_message", data);
+          data.from = user._id;
+          await messageService.createMessage(data);
+          io.emit("got_message", { message: data });
+        });
 
-
-         socket.on("input", async data =>{
-            console.log(data);
-            data.from = user._id;
-            await messageService.createMessage(data);
-            io.emit("status", { message: "Message Sent", clear: true });
+        socket.on("request_message", async data =>{
+          console.log("Received request_message", data);
+          var messages = messageService.fetchAll(user._id, data.to)
+          io.emit("got_messages", {messages:messages});
         });
 
       }
