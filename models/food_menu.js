@@ -13,6 +13,14 @@ class FoodMenu extends Model {
 
     super(model);
   }
+
+  fetchAll() {
+    return this.model.find().populate('categoryId').lean();
+  }
+
+  fetchById(id) {
+    return this.model.findById(id).populate('categoryId').lean();
+  }
 }
 
 module.exports = new FoodMenu();

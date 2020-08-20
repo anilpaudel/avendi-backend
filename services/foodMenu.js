@@ -1,4 +1,3 @@
-
 const FoodMenu = require('../models/food_menu');
 
 exports.createFoodMenu = function (payload) {
@@ -14,11 +13,30 @@ exports.createFoodMenu = function (payload) {
   }
 };
 
-exports.fetchAll = () => FoodMenu.fetchAll();
+const formatMenu = (menu) => {
+  const updatedMenu = { ...menu };
 
-exports.fetchById = (foodMenuId) => FoodMenu.fetchById(foodMenuId);
+  updatedMenu.categories =
+    menu.categoryId && menu.categoryId.map((category) => category.name);
+
+  delete updatedMenu.categoryId;
+
+  return updatedMenu;
+};
+
+exports.fetchAll = async () => {
+  const menuData = await FoodMenu.fetchAll();
+
+  return menuData.map(formatMenu);
+};
+
+exports.fetchById = async (foodMenuId) => {
+  const menu = await FoodMenu.fetchById(foodMenuId);
+  
+  return formatMenu(menu);
+};
 
 exports.updateFoodMenu = (foodMenuId, updateData) =>
   FoodMenu.updateById(foodMenuId, updateData);
 
-exports.deleteFoodMenu = (foodMenuId) => FoodMenu.deleteById(foodMenuId)
+exports.deleteFoodMenu = (foodMenuId) => FoodMenu.deleteById(foodMenuId);

@@ -22,4 +22,4 @@ exports.updateExtensionRate = (extensionRateId, updateData) =>
   ExtensionRate.updateById(extensionRateId, updateData);
 
 exports.deleteExtensionRate = (extensionRateId) =>
-  Room.deleteById(extensionRateId);
+  ExtensionRate.deleteById(extensionRateId);

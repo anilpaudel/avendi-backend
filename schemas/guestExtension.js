@@ -16,6 +16,10 @@ module.exports = {
     ref: collectionNames.EXTENSION_RATE,
     required: true,
   },
+  assignTo: {
+    type: Schema.Types.ObjectId,
+    ref: collectionNames.USER,
+  },
   status: {
     type: String,
     default: EXTENSION_STATUS.IN_PROGRESS,

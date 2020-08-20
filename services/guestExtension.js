@@ -52,8 +52,9 @@ exports.updateExtension = async (extensionId, updateData) => {
       throw new ValidationError('Invalid extension rate provided.');
     }
   }
-  Extension.updateById(extensionId, updateData);
+  return Extension.updateById(extensionId, updateData);
 };
+
 exports.assignStaffToExtension = async function (extensionId, staffId) {
   const user = await User.fetchById(staffId);
 

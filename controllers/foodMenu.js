@@ -46,7 +46,10 @@ exports.updateFoodMenu = async (req, res, next) => {
   try {
     const { foodMenuId } = req.params;
     const updatePayload = req.body;
-    const data = await foodMenuService.updateFoodMenu(foodMenuId, updatePayload);
+    const data = await foodMenuService.updateFoodMenu(
+      foodMenuId,
+      updatePayload
+    );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);
@@ -61,6 +64,7 @@ exports.deleteFoodMenu = async (req, res, next) => {
     const { foodMenuId } = req.params;
 
     await foodMenuService.deleteFoodMenu(foodMenuId);
+
     res.status(HttpStatus.OK).json({});
   } catch (err) {
     next(err);

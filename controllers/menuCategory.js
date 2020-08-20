@@ -60,7 +60,7 @@ exports.deleteMenuCategory = async (req, res, next) => {
   try {
     const { menuCategoryId } = req.params;
 
-    await foodMenuService.deleteMenuCategory(menuCategoryId);
+    await menuCategoryService.deleteMenuCategory(menuCategoryId);
     res.status(HttpStatus.OK).json({});
   } catch (err) {
     next(err);
