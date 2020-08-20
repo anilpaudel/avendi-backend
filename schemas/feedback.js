@@ -5,12 +5,12 @@ const { collectionNames } = require('./index');
 module.exports = {
   bookingId: {
     type: Schema.Types.ObjectId,
-    ref: collectionNames.BOOKING, // when we use ref need to make sure the collection name is same through out the project
+    ref: collectionNames.BOOKING,
     required: true,
   },
   type: { type: String },
-  rating: { type: Number, required: true },
-  comment: { type: String },
+  rating: { type: Number, required: true, enum: [1, 2, 3, 4, 5] },
+  comment: { type: String, required: true },
   staffId: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.USER,

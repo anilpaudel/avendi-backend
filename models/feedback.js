@@ -13,6 +13,20 @@ class FeedBack extends Model {
 
     super(model);
   }
+
+  fetchAll() {
+    return this.model.find().populate({
+      path: 'bookingId staffId',
+      populate: [{ path: 'roomId', select: 'number' }, { path: 'guestId' }],
+    });
+  }
+
+  fetchById(id) {
+    return this.model.findById(id).populate({
+      path: 'bookingId staffId',
+      populate: [{ path: 'roomId', select: 'number' }, { path: 'guestId' }],
+    });
+  }
 }
 
 module.exports = new FeedBack();

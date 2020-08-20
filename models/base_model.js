@@ -7,8 +7,8 @@ class Model {
    *
    * @param {object} model
    */
-  constructor (model) {
-    this.model = model
+  constructor(model) {
+    this.model = model;
   }
 
   /**
@@ -17,8 +17,12 @@ class Model {
    * @param {Object} payload
    * @returns {Promise}
    */
-  save (payload = {}) {
-    return this.model.create(payload)
+  save(payload = {}) {
+    return this.model.create(payload);
+  }
+
+  fetchAll() {
+    return this.model.find();
   }
 
   /**
@@ -28,8 +32,8 @@ class Model {
    * @param {Object} payload
    * @returns {Promise}
    */
-  updateById (id, payload) {
-    return this.model.findByIdAndUpdate({ _id: id }, payload, { new: true })
+  updateById(id, payload) {
+    return this.model.findByIdAndUpdate({ _id: id }, payload, { new: true });
   }
 
   /**
@@ -38,8 +42,8 @@ class Model {
    * @param {String} id
    * @returns {Promise}
    */
-  deleteById (id) {
-    return this.model.findByIdAndRemove({ _id: id })
+  deleteById(id) {
+    return this.model.findByIdAndRemove({ _id: id });
   }
 
   /**
@@ -48,9 +52,9 @@ class Model {
    * @param {object} options
    * @returns {Promise}
    */
-  fetchById (id) {
-    return this.model.findById(id)
+  fetchById(id) {
+    return this.model.findById(id);
   }
 }
 
-module.exports = Model
+module.exports = Model;

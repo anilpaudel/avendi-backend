@@ -1,33 +1,42 @@
 const { Router } = require('express');
 
-const router = Router();
+const feedbackController = require('../controllers/feedback');
+const validateRequest = require('../middleware/requestValidator');
+const feedbackValidationSchema = require('../validators/feedbackValidator');
 
-const tempController = (req, res) =>
-  res.status(200).json({ message: 'Route Working. Need to implement!' });
+const router = Router();
 
 /**
  * GET /api/feedback/
  */
-router.get('/', tempController);
+router.get('/', feedbackController.fetchAll);
 
 /**
  * GET /api/feedback/:feedbackId
  */
-router.get('/:feedbackId', tempController);
+router.get('/:feedbackId', feedbackController.fetchById);
 
 /**
  * POST /api/feedback/
  */
-router.post('/', tempController);
+router.post(
+  '/',
+  validateRequest(feedbackValidationSchema.create),
+  feedbackController.create
+);
 
 /**
  * DELETE /api/feedback/:feedbackId
  */
-router.delete('/:feedbackId', tempController);
+router.delete('/:feedbackId', feedbackController.deleteFeedback);
 
 /**
  * PUT /api/feedback/:feedbackId
  */
-router.put('/:feedbackId', tempController);
+router.put(
+  '/:feedbackId',
+  validateRequest(feedbackValidationSchema.update),
+  feedbackController.updateFeedback
+);
 
 module.exports = router;
