@@ -72,7 +72,7 @@ function configureServer() {
 // run configuration tools
 const expressServer = configureServer();
 const io = socketIo(expressServer);
-app.use(cors())
+app.use(cors());
 require('./config/socket.js').configure(io);
 
 // db
@@ -80,6 +80,10 @@ require('./config/database');
 
 // Configure application middleware stack, inject authentication session
 require('./config/express').configure(app);
+
+const { bindCurrentNamespace } = require('./utils/storage');
+
+app.use(bindCurrentNamespace);
 
 // Link routes
 const { publicRouter, privateRouter } = require('./config/routes');

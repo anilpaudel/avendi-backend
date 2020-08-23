@@ -7,7 +7,7 @@ const { collectionNames, createSchema } = require('../schemas/index');
 const { COUNTER_NAME } = require('../constants/counter');
 
 class Counter extends Model {
-  constructor() {
+  constructor(dbConnection) {
     const model = mongoose.model(
       collectionNames.COUNTER,
       createSchema(counterSchema, { timestamps: true })

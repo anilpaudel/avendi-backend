@@ -8,7 +8,7 @@ class RefreshToken extends Model {
   /**
    * This constructs the RefreshToken model with predefined CRUD operations.
    */
-  constructor() {
+  constructor(connection) {
     const schema = createSchema(refreshTokenSchema, { timestamps: true });
 
     schema.virtual('isExpired').get(function () {
@@ -29,7 +29,7 @@ class RefreshToken extends Model {
       },
     });
 
-    const model = mongoose.model(collectionNames.REFRESH_TOKEN, schema);
+    const model = connection.model(collectionNames.REFRESH_TOKEN, schema);
 
     super(model);
   }
@@ -51,4 +51,11 @@ class RefreshToken extends Model {
   }
 }
 
-module.exports = new RefreshToken();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+  if (!tenantConnection) {
+    return new RefreshToken(mongoose);
+  }
+
+  return new RefreshToken(tenantConnection);
+};

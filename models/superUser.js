@@ -1,13 +1,11 @@
 const mongoose = require('../config/database');
 
-const { getCurrentTenant } = require('../utils/storage');
-
 const Model = require('./base_model');
 const userSchema = require('../schemas/user');
 const { collectionNames, createSchema } = require('../schemas/index');
 
-class User extends Model {
-  constructor(dbConnection) {
+class SuperUser extends Model {
+  constructor() {
     const schema = createSchema(userSchema);
 
     schema.set('toJSON', {
@@ -18,7 +16,7 @@ class User extends Model {
       },
     });
 
-    const model = dbConnection.model(collectionNames.USER, schema);
+    const model = mongoose.model('superuser', schema);
 
     super(model);
   }
@@ -31,11 +29,5 @@ class User extends Model {
     return this.model.findOne({ email });
   }
 }
-
-module.exports = () => {
-  const tenantConnection = getCurrentTenant();
-  if (!tenantConnection) {
-    return new User(mongoose);
-  }
-  return new User(tenantConnection);
-};
+const modelClass = new SuperUser();
+module.exports = () => modelClass;

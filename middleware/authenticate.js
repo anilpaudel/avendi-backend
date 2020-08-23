@@ -51,7 +51,8 @@ async function fetchUserByToken(token) {
 async function authenticateUser(req, res, next) {
   try {
     const token = extractTokenFromHeaders(req.headers);
-    const user = await fetchUserByToken(token);
+    const { TENANT } = req.headers;
+    const user = await fetchUserByToken(token, TENANT);
 
     req.token = token;
     req.currentUser = user;
@@ -63,4 +64,3 @@ async function authenticateUser(req, res, next) {
 
 exports.authenticateUser = authenticateUser;
 exports.fetchUserByToken = fetchUserByToken;
-

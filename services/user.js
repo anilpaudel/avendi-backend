@@ -18,7 +18,7 @@ async function createUser(payload) {
       password: bcrypt.hashSync(payload.password),
     };
 
-    const user = await User.save(userData);
+    const user = await User().save(userData);
 
     if (user.type != USER_TYPE.GUEST) {
       const staffCounter = await Counter.fetchStaffCounter();
@@ -46,7 +46,7 @@ async function createUser(payload) {
 }
 
 function fetchAll() {
-  return User.fetchAll();
+  return User().fetchAll();
 }
 
 async function fetchAllTeam() {
@@ -56,11 +56,11 @@ async function fetchAllTeam() {
 }
 
 function fetchById(userId) {
-  return User.fetchById(userId);
+  return User().fetchById(userId);
 }
 
 async function authenticate(email, password) {
-  const user = await User.fetchByEmail(email);
+  const user = await User().fetchByEmail(email);
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
     throw new AuthenticationError(authMessage.incorrectPassword);
@@ -70,11 +70,11 @@ async function authenticate(email, password) {
 }
 
 function updateUser(userId, updateData) {
-  return User.updateById(userId, updateData);
+  return User().updateById(userId, updateData);
 }
 
 function deleteUser(userId) {
-  return User.deleteById(userId);
+  return User().deleteById(userId);
 }
 
 async function uploadUserImage(userId, file) {
@@ -89,7 +89,7 @@ async function uploadUserImage(userId, file) {
       folderName ? `${folderName}/${filename}` : `${filename}`
     );
 
-    const user = await User.updateById(userId, { imageUrl: uploadImageUrl });
+    const user = await User().updateById(userId, { imageUrl: uploadImageUrl });
 
     return user;
   } catch (err) {
