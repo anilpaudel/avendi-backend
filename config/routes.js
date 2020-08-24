@@ -7,7 +7,7 @@ const { Router } = require('express');
 // unclassified routes
 const auth = require('../controllers/auth');
 const authenticateUser = require('../middleware/authenticate').authenticateUser;
-
+const tenantHandler = require('../middleware/tenantHandler').tenantHandler;
 const userRoutes = require('../routes/user');
 const roomRoutes = require('../routes/room');
 const serviceRoutes = require('../routes/service');
@@ -18,6 +18,7 @@ const menuCategoryRoutes = require('../routes/menuCategory');
 const requestRoutes = require('../routes/guestRequest');
 const extensionRoutes = require('../routes/guestExtension');
 const extensionRateRoutes = require('../routes/extensionRate');
+const adminRoutes = require('../routes/admin');
 
 const userController = require('../controllers/user');
 const validateRequest = require('../middleware/requestValidator');
@@ -35,16 +36,8 @@ publicRouter.get('/', (_, res) => {
   res.status(200).json({ message: 'Avendi Backend' });
 });
 
-/**
- * POST /api/auth/login
- */
-publicRouter.post('/auth/login', auth.login);
-publicRouter.post('/auth/refresh', auth.refresh);
-publicRouter.post(
-  '/user',
-  validateRequest(userValidationSchema.create),
-  userController.create
-);
+publicRouter.use('/admin', adminRoutes);
+
 
 /**
  * Contains secured API routes for the application.
@@ -54,8 +47,15 @@ const privateRouter = Router();
 /**
  * Authentication middleware for private routes.
  */
+privateRouter.use(tenantHandler);
+/**
+ * POST /api/auth/login
+ */
+privateRouter.post('/auth/login', auth.login);
+privateRouter.post('/auth/refresh', auth.refresh);
 privateRouter.use(authenticateUser); // authentication middleware.
 privateRouter.use('/user', userRoutes);
+
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);
 privateRouter.use('/service', serviceRoutes);

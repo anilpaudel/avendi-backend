@@ -1,25 +1,34 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/dev', {
+const mongoOptions = {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+  autoIndex: true,
+  bufferMaxEntries: 0,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 30000,
+};
 
-const { connection: db } = mongoose;
+const connect = () =>
+  mongoose.createConnection(process.env.MONGODB_URL, mongoOptions);
 
-db.on('connected', () => {
-  console.log(`Connection to mongoDB successful`);
-});
+const connectToMongoDB = () => {
+  const db = connect(process.env.MONGODB_URL);
+  db.on('open', () => {
+    console.info(
+      `Mongoose connection open to ${JSON.stringify(process.env.MONGODB_URL)}`
+    );
+  });
+  db.on('error', (err) => {
+    console.info(
+      `Mongoose connection error: ${err} with connection info ${JSON.stringify(
+        process.env.MONGODB_URL
+      )}`
+    );
+    process.exit(0);
+  });
+  return db;
+};
 
-db.on('error', (error) => {
-  console.log(`db error: ${error}`);
-  console.error(error);
-});
-
-db.on('disconnected', () => {
-  console.log(`db disconnect:`);
-  console.debug('MongoDB disconnected');
-});
-
-module.exports = db;
+module.exports = connectToMongoDB();

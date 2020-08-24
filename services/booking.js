@@ -11,7 +11,7 @@ async function createBooking(payload) {
     const data = {
       ...payload,
     };
-    const user = await User.fetchById(data.guestId);
+    const user = await User().fetchById(data.guestId);
 
     if (!user) {
       throw new CustomError(bookingMessage.invalidUserId);
@@ -21,7 +21,7 @@ async function createBooking(payload) {
       throw new CustomError(bookingMessage.notGuestId);
     }
 
-    const room = await Room.fetchById(data.roomId);
+    const room = await Room().fetchById(data.roomId);
 
     if (!room) {
       throw new CustomError(bookingMessage.invalidRoomId);
@@ -40,7 +40,7 @@ async function createBooking(payload) {
     ) {
       throw new CustomError(bookingMessage.roomNotAvailable);
     }
-    const bookedData = await Booking.save(data);
+    const bookedData = await Booking().save(data);
 
     return bookedData;
   } catch (err) {
@@ -49,10 +49,10 @@ async function createBooking(payload) {
   }
 }
 
-const fetchAll = () => Booking.fetchAll();
+const fetchAll = () => Booking().fetchAll();
 
 async function updateBooking(bookingId, updateData) {
-  const booking = await Booking.fetchById(bookingId);
+  const booking = await Booking().fetchById(bookingId);
 
   if (!booking) {
     throw new CustomError(bookingMessage.invalidBookingId);
@@ -94,11 +94,11 @@ async function updateBooking(bookingId, updateData) {
     throw new CustomError(bookingMessage.roomNotAvailable);
   }
 
-  return Booking.updateById(bookingId, updateData);
+  return Booking().updateById(bookingId, updateData);
 }
 
 async function findPreviousBooking(roomId, dateCheckin, dateCheckout) {
-  return Booking.findPreviousBooking(
+  return Booking().findPreviousBooking(
     roomId,
     new Date(dateCheckin),
     new Date(dateCheckout)

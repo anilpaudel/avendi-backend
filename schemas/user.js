@@ -1,6 +1,7 @@
 const { USER_TYPE } = require('../constants/user');
+const { createSchema } = require('../schemas/index');
 
-module.exports = {
+module.exports = createSchema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -13,4 +14,4 @@ module.exports = {
   },
   currency: { type: String },
   imageUrl: { type: String },
-};
+});

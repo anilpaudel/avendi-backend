@@ -12,14 +12,14 @@ exports.createExtension = async function (payload, guestId) {
     };
 
     if (data && data.assignTo) {
-      const assignee = await User.fetchById(data.assignTo);
+      const assignee = await User().fetchById(data.assignTo);
 
       if (!assignee || (assignee && assignee.type === USER_TYPE.GUEST)) {
         throw new ValidationError('Invalid AssignTo id provided.');
       }
     }
 
-    const currentBooking = await Booking.findActiveBooking(guestId);
+    const currentBooking = await Booking().findActiveBooking(guestId);
 
     if (!currentBooking) {
       throw new ValidationError('No active booking found.');
@@ -29,42 +29,42 @@ exports.createExtension = async function (payload, guestId) {
       throw new ValidationError('Invalid extension date');
     }
 
-    const extensionRate = await ExtensionRate.fetchById(data.rateId);
+    const extensionRate = await ExtensionRate().fetchById(data.rateId);
     if (!extensionRate) {
       throw new ValidationError('Invalid extension rate provided.');
     }
 
-    return Extension.save({ ...data, bookingId: currentBooking._id });
+    return Extension().save({ ...data, bookingId: currentBooking._id });
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-exports.fetchAll = () => Extension.fetchAll();
+exports.fetchAll = () => Extension().fetchAll();
 
-exports.fetchById = (extensionId) => Extension.fetchById(extensionId);
+exports.fetchById = (extensionId) => Extension().fetchById(extensionId);
 
 exports.updateExtension = async (extensionId, updateData) => {
   if (updateData.rateId) {
-    const extensionRate = await ExtensionRate.fetchById(updateData.rateId);
+    const extensionRate = await ExtensionRate().fetchById(updateData.rateId);
     if (!extensionRate) {
       throw new ValidationError('Invalid extension rate provided.');
     }
   }
-  return Extension.updateById(extensionId, updateData);
+  return Extension().updateById(extensionId, updateData);
 };
 
 exports.assignStaffToExtension = async function (extensionId, staffId) {
-  const user = await User.fetchById(staffId);
+  const user = await User().fetchById(staffId);
 
   if (!user || (user && user.type === USER_TYPE.GUEST)) {
     throw new ValidationError('Invalid AssignTo id provided.');
   }
 
-  return Extension.updateById(extensionId, {
+  return Extension().updateById(extensionId, {
     assignTo: staffId,
   });
 };
 
-exports.deleteExtension = (extensionId) => Extension.deleteById(extensionId);
+exports.deleteExtension = (extensionId) => Extension().deleteById(extensionId);

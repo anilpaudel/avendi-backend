@@ -1,8 +1,8 @@
 const { Schema } = require('mongoose');
 
-const { collectionNames } = require('./index');
+const { collectionNames, createSchema } = require('./index');
 
-module.exports = {
+module.exports = createSchema({
   department: { type: String, required: true },
   userId: {
     type: Schema.Types.ObjectId,
@@ -10,4 +10,4 @@ module.exports = {
     required: true,
   },
   staffId: { type: Number, required: true, unique: true },
-};
+});

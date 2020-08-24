@@ -5,11 +5,8 @@ const serviceSchema = require('../schemas/service');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class Service extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.SERVICE,
-      createSchema(serviceSchema, { timestamps: true })
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.SERVICE, serviceSchema);
 
     super(model);
   }
@@ -19,4 +16,11 @@ class Service extends Model {
   }
 }
 
-module.exports = new Service();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Service(tenantConnection);
+};

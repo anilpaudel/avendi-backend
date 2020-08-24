@@ -1,6 +1,7 @@
 const { ROOM_TYPES } = require('../constants/room');
+const { createSchema } = require('.');
 
-module.exports = {
+module.exports = createSchema({
   number: {
     type: Number,
     required: true,
@@ -16,4 +17,4 @@ module.exports = {
     required: true,
     enum: Object.keys(ROOM_TYPES).map((key) => ROOM_TYPES[key]),
   },
-};
+});

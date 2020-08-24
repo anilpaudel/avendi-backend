@@ -23,7 +23,6 @@ router.get('/:requestId', requestController.fetchById);
  */
 router.post(
   '/',
-  validateUserType([USER_TYPE.GUEST]),
   requestValidator(requestValidationSchema.create),
   requestController.create
 ); //only guest can create request

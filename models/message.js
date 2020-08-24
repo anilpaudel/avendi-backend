@@ -9,11 +9,8 @@ class Message extends Model {
   /**
    * This constructs the Message model with predefined CRUD operations.
    */
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.MESSAGE,
-      createSchema(messageSchema, { timestamps: true }).plugin(mongoosePaginate)
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.MESSAGE, messageSchema);
 
     super(model);
   }
@@ -27,6 +24,16 @@ class Message extends Model {
       page,
       limit,
       sort: { createdAt: -1 },
+      populate: [
+        {
+          path: 'from',
+          select: 'firstName lastName _id',
+        },
+        {
+          path: 'to',
+          select: 'firstName lastName _id',
+        },
+      ],
     };
 
     const result = await this.model.paginate(
@@ -42,4 +49,11 @@ class Message extends Model {
   }
 }
 
-module.exports = new Message();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Message(tenantConnection);
+};

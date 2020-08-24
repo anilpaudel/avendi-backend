@@ -5,8 +5,8 @@ const guestRequestSchema = require('../schemas/guestRequest');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class GuestRequest extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.GUEST_REQUEST,
       createSchema(guestRequestSchema, { timestamps: true })
     );
@@ -19,4 +19,11 @@ class GuestRequest extends Model {
   }
 }
 
-module.exports = new GuestRequest();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new GuestRequest(tenantConnection);
+};

@@ -2,14 +2,14 @@ const mongoose = require('../config/database');
 
 const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
-const { collectionNames, createSchema } = require('../schemas/index');
+const { collectionNames } = require('../schemas/index');
 const { dateCheckout } = require('../schemas/booking');
 
 class Booking extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.BOOKING,
-      createSchema(bookingSchema, { timestamps: true })
+      bookingSchema
     );
 
     super(model);
@@ -59,4 +59,11 @@ class Booking extends Model {
   }
 }
 
-module.exports = new Booking();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Booking(tenantConnection);
+};

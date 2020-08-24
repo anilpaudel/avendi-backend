@@ -1,14 +1,14 @@
 const mongoose = require('../config/database');
 
 const Model = require('./base_model');
-const guestExtenstionSchema = require('../schemas/guestExtension');
+const guestExtensionSchema = require('../schemas/guestExtension');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class GuestExtension extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.GUEST_EXTENSION,
-      createSchema(guestExtenstionSchema, { timestamps: true })
+      guestExtensionSchema
     );
 
     super(model);
@@ -19,4 +19,11 @@ class GuestExtension extends Model {
   }
 }
 
-module.exports = new GuestExtension();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new GuestExtension(tenantConnection);
+};

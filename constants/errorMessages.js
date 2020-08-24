@@ -15,3 +15,8 @@ exports.BOOKING = {
   dateCheckout: 'Checkout Date cannot be earlier than Checkin date',
   dateCheckin: 'Checkin Date cannot be later than Checkout date',
 };
+
+exports.TENANT = {
+  invalidTenant: 'Invalid tenant in the header',
+  noTenant: 'No tenant provided in the header',
+};

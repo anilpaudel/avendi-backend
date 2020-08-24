@@ -3,13 +3,13 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const categorySchema = require('../schemas/menuCategory');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
+const ValidationError = require('../lib/errors/validation');
+const { TENANT } = require('../constants/errorMessages');
 
 class MenuCategory extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.MENU_CATEGORY,
-      createSchema(categorySchema, { timestamps: true })
-    );
+  constructor(db) {
+    const model = db.model(collectionNames.MENU_CATEGORY, categorySchema);
 
     super(model);
   }
@@ -17,7 +17,13 @@ class MenuCategory extends Model {
   fetchAll() {
     return this.model.find();
   }
-  
 }
 
-module.exports = new MenuCategory();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new MenuCategory(tenantConnection);
+};

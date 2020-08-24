@@ -63,4 +63,3 @@ async function authenticateUser(req, res, next) {
 
 exports.authenticateUser = authenticateUser;
 exports.fetchUserByToken = fetchUserByToken;
-

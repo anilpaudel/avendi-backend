@@ -5,18 +5,22 @@ const staffSchema = require('../schemas/staff');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class Staff extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.STAFF,
-      createSchema(staffSchema, { timestamps: true })
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.STAFF, staffSchema);
 
     super(model);
   }
 
   fetchAll() {
-    return this.model.find().populate("userId");
+    return this.model.find().populate('userId');
   }
 }
 
-module.exports = new Staff();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Staff(tenantConnection);
+};

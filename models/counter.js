@@ -7,11 +7,8 @@ const { collectionNames, createSchema } = require('../schemas/index');
 const { COUNTER_NAME } = require('../constants/counter');
 
 class Counter extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.COUNTER,
-      createSchema(counterSchema, { timestamps: true })
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.COUNTER, counterSchema);
 
     super(model);
   }
@@ -23,7 +20,6 @@ class Counter extends Model {
     const staffCounter = await this.model.findOne({
       counterName: COUNTER_NAME.STAFF,
     });
-
 
     if (!staffCounter || isEmpty(staffCounter)) {
       return this.model.create({ counterName: COUNTER_NAME.STAFF });
@@ -37,4 +33,11 @@ class Counter extends Model {
   }
 }
 
-module.exports = new Counter();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Counter(tenantConnection);
+};

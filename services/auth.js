@@ -15,7 +15,7 @@ const AuthenticationError = require('../lib/errors/authentication');
  * @returns {String}
  */
 async function generateAccessAndRefreshTokens(data) {
-  const oldRefreshToken = await RefreshToken.findActiveToken(data._id);
+  const oldRefreshToken = await RefreshToken().findActiveToken(data._id);
 
   if (oldRefreshToken) {
     await revoke(oldRefreshToken.token);
@@ -26,7 +26,7 @@ async function generateAccessAndRefreshTokens(data) {
   const accessToken = jwt.createToken(accessTokenData);
   const refreshToken = jwt.createRefreshToken(refreshTokenData);
 
-  await RefreshToken.save({
+  await RefreshToken().save({
     userId: data.id,
     token: refreshToken,
     expiresAt: new Date(
@@ -70,7 +70,7 @@ async function refreshToken(token) {
  * @returns {String}
  */
 async function verifyDecodedToken(data) {
-  const user = await User.fetchById(data.data._id);
+  const user = await User().fetchById(data.data._id);
 
   if (!user) {
     throw new AuthenticationError(authMessage.invalid);
@@ -96,7 +96,7 @@ async function generateAccessToken(data) {
  * @param {String} token
  */
 async function revoke(token) {
-  await RefreshToken.revokeToken(token);
+  await RefreshToken().revokeToken(token);
 }
 
 module.exports = {

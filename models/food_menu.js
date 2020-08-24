@@ -5,10 +5,10 @@ const foodMenuSchema = require('../schemas/foodMenu');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class FoodMenu extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.FOOD_MENU,
-      createSchema(foodMenuSchema, { timestamps: true })
+      foodMenuSchema
     );
 
     super(model);
@@ -23,4 +23,11 @@ class FoodMenu extends Model {
   }
 }
 
-module.exports = new FoodMenu();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new FoodMenu(tenantConnection);
+};
