@@ -7,18 +7,18 @@ exports.createMenuCategory = function (payload) {
       ...payload,
     };
 
-    return MenuCategory()().save(data);
+    return MenuCategory().save(data);
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-exports.fetchAll = () => MenuCategory()().fetchAll();
+exports.fetchAll = () => MenuCategory().fetchAll();
 
-exports.fetchById = (menuCategoryId) => MenuCategory()().fetchById(menuCategoryId);
+exports.fetchById = (menuCategoryId) => MenuCategory().fetchById(menuCategoryId);
 
 exports.updateMenuCategory = (menuCategoryId, updateData) =>
-  MenuCategory()().updateById(menuCategoryId, updateData);
+  MenuCategory().updateById(menuCategoryId, updateData);
 
-exports.deleteMenuCategory = (menuCategoryId) => MenuCategory()().deleteById(menuCategoryId)
+exports.deleteMenuCategory = (menuCategoryId) => MenuCategory().deleteById(menuCategoryId)

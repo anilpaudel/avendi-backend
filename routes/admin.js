@@ -22,7 +22,11 @@ router.post('/refresh', authController.refresh);
 /**
  * POST /api/admin/
  */
-router.post('/', adminController.createAdmin);
+router.post(
+  '/',
+  requestValidator(adminUserValidationSchema.createAdmin),
+  adminController.createAdmin
+);
 
 router.use(authenticateUser);
 

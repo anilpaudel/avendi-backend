@@ -18,6 +18,13 @@ const create = Joi.object({
   tenant: Joi.string().label('Tenant name').required(),
 });
 
+const createAdmin = Joi.object({
+  firstName: Joi.string().label('First Name').trim().min(1).required(),
+  lastName: Joi.string().label('Last Name').trim().min(1).required(),
+  email: Joi.string().email().label('Email').required(),
+  password: Joi.string().label('Password').required(),
+});
+
 const update = Joi.object({
   firstName: Joi.string().label('First Name').trim().min(1),
   lastName: Joi.string().label('Last Name').trim().min(1),
@@ -33,4 +40,5 @@ const update = Joi.object({
 module.exports = {
   create,
   update,
+  createAdmin
 };
