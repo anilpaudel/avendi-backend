@@ -9,7 +9,7 @@ module.exports = createSchema({
   image: { type: String },
   categoryId: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.ObjectId,
       ref: collectionNames.MENU_CATEGORY,
       required: true,
     },

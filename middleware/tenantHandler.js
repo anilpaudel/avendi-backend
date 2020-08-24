@@ -10,15 +10,12 @@ const { TENANT } = require('../constants/errorMessages');
 exports.tenantHandler = async function (req, res, next) {
   try {
     const { tenant } = req.headers;
-    console.log(req.headers);
 
     if (!tenant) {
       next(new ValidationError(TENANT.noTenant));
     }
 
     const currentTenant = await tenantService.fetchByTenantName(tenant);
-
-    console.log('currentTenant', currentTenant);
 
     if (!currentTenant) {
       next(new ValidationError(TENANT.invalidTenant));

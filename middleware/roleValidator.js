@@ -9,7 +9,6 @@ const ForbiddenError = require('../lib/errors/forbidden');
 module.exports = function validateUserType(user_roles) {
   return async (req, _, next) => {
     try {
-      console.log()
       const role = req.currentUser.type;
 
       if (!user_roles.includes(role)) {

@@ -28,7 +28,7 @@ exports.createFeedback = async function (payload, guestId) {
       throw new ValidationError('Invalid Staff id provided.');
     }
 
-    const feedback = await Feedback.save(feedbackData);
+    const feedback = await Feedback().save(feedbackData);
     const message = await Message().save({
       from: guestId,
       to: feedbackData.staffId,
@@ -57,7 +57,7 @@ const formatFeedbackData = (data) => {
 };
 
 exports.fetchAll = async function () {
-  const feedbackList = await Feedback.fetchAll();
+  const feedbackList = await Feedback().fetchAll();
 
   const formattedResult = feedbackList.map(formatFeedbackData);
 
@@ -65,7 +65,7 @@ exports.fetchAll = async function () {
 };
 
 exports.fetchById = async (feedbackId) => {
-  const data = await Feedback.fetchById(feedbackId);
+  const data = await Feedback().fetchById(feedbackId);
 
   if (!data) {
     return {};
@@ -75,6 +75,6 @@ exports.fetchById = async (feedbackId) => {
 };
 
 exports.updateFeedback = (feedbackId, updateData) =>
-  Feedback.updateById(feedbackId, updateData);
+  Feedback().updateById(feedbackId, updateData);
 
-exports.deleteFeedback = (feedbackId) => Feedback.deleteById(feedbackId);
+exports.deleteFeedback = (feedbackId) => Feedback().deleteById(feedbackId);

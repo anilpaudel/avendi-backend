@@ -1,13 +1,19 @@
 const mongoose = require('../config/database');
 
 const Model = require('./base_model');
+const Booking = require('./booking');
+const Staff = require('./staff');
+const Room = require('./room');
 const feedBackSchema = require('../schemas/feedback');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
-
 class FeedBack extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(collectionNames.FEEDBACK, feedBackSchema);
+
+    Booking();
+    Staff();
+    Room();
 
     super(model);
   }
