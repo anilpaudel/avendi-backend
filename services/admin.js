@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 
 const Tenant = require('../models/tenant');
 const User = require('../models/user');
+const Counter = require('../models/counter');
+const Staff = require('../models/staff');
 const authMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 const ValidationError = require('../lib/errors/validation');
@@ -62,7 +64,22 @@ exports.createUser = async function createUser(payload) {
 
     const user = await User().save(userData);
 
-    return user;
+    const staffCounter = await Counter().fetchStaffCounter();
+    const staffData = {
+      userId: user._id,
+      department: userData.department,
+      staffId: staffCounter.count,
+    };
+
+    const staff = await Staff().save(staffData);
+
+    const userObject = user.toJSON();
+
+    return {
+      ...userObject,
+      staffId: staff.staffId,
+      department: staff.department,
+    };
   } catch (err) {
     throw err;
   }
