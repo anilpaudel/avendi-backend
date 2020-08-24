@@ -22,6 +22,16 @@ class Message extends Model {
       page,
       limit,
       sort: { createdAt: -1 },
+      populate: [
+        {
+          path: 'from',
+          select: 'firstName lastName _id',
+        },
+        {
+          path: 'to',
+          select: 'firstName lastName _id',
+        },
+      ],
     };
 
     const result = await this.model.paginate(
