@@ -4,6 +4,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const Model = require('./base_model');
 const messageSchema = require('../schemas/message');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class Message extends Model {
   /**

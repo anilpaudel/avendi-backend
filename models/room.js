@@ -3,6 +3,7 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const roomSchema = require('../schemas/room');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class Room extends Model {
   constructor(dbConnection) {

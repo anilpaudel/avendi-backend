@@ -3,6 +3,7 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const guestExtensionSchema = require('../schemas/guestExtension');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class GuestExtension extends Model {
   constructor(dbConnection) {

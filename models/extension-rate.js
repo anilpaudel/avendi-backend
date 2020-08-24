@@ -3,10 +3,14 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const extensionRateSchema = require('../schemas/extensionRate');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class ExtensionRate extends Model {
   constructor(dbConnection) {
-    const model = dbConnection.model(collectionNames.CATEGORY, extensionRateSchema);
+    const model = dbConnection.model(
+      collectionNames.CATEGORY,
+      extensionRateSchema
+    );
 
     super(model);
   }

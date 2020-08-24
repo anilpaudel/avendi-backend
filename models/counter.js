@@ -5,6 +5,7 @@ const Model = require('./base_model');
 const counterSchema = require('../schemas/counter');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { COUNTER_NAME } = require('../constants/counter');
+const { getCurrentTenant } = require('../utils/storage');
 
 class Counter extends Model {
   constructor(dbConnection) {

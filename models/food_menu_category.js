@@ -3,6 +3,7 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const categorySchema = require('../schemas/foodMenuCategory');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class FoodMenuCategory extends Model {
   constructor(dbConnection) {

@@ -3,13 +3,11 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const feedBackSchema = require('../schemas/feedback');
 const { collectionNames, createSchema } = require('../schemas/index');
+const { getCurrentTenant } = require('../utils/storage');
 
 class FeedBack extends Model {
   constructor(dbConnection) {
-    const model = dbConnection.model(
-      collectionNames.FEEDBACK,
-      feedBackSchema
-    );
+    const model = dbConnection.model(collectionNames.FEEDBACK, feedBackSchema);
 
     super(model);
   }

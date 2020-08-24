@@ -3,14 +3,11 @@ const mongoose = require('../config/database');
 const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
 const { collectionNames } = require('../schemas/index');
-const { dateCheckout } = require('../schemas/booking');
+const { getCurrentTenant } = require('../utils/storage');
 
 class Booking extends Model {
   constructor(dbConnection) {
-    const model = dbConnection.model(
-      collectionNames.BOOKING,
-      bookingSchema
-    );
+    const model = dbConnection.model(collectionNames.BOOKING, bookingSchema);
 
     super(model);
   }
