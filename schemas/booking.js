@@ -2,8 +2,9 @@ const { Schema } = require('mongoose');
 
 const { collectionNames } = require('./index');
 const { BOOKING_STATUS } = require('../constants/booking');
+const { createSchema } = require('./index');
 
-module.exports = {
+module.exports = createSchema({
   roomId: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.ROOM,
@@ -23,4 +24,4 @@ module.exports = {
     enum: Object.keys(BOOKING_STATUS).map((key) => BOOKING_STATUS[key]),
   },
   creditCard: { type: Boolean },
-};
+});

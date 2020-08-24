@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 const Tenant = require('../models/tenant');
-const SuperUser = require('../models/superUser');
+const User = require('../models/user');
 const authMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 
@@ -27,14 +27,14 @@ exports.updateTenant = (tenantName, updateData) =>
 
 exports.deleteTenant = (tenantName) => Tenant().deleteByTenantName(tenantName);
 
-exports.createUser = async function createUser(payload) {
+exports.createAdmin = async function createUser(payload) {
   try {
     const userData = {
       ...payload,
       password: bcrypt.hashSync(payload.password),
     };
 
-    const user = await SuperUser().save(userData);
+    const user = await User().save(userData);
 
     return user;
   } catch (err) {
@@ -42,27 +42,50 @@ exports.createUser = async function createUser(payload) {
   }
 };
 
-exports.fetchAll = function fetchAll() {
-  return SuperUser().fetchAll();
-};
+exports.createUser = async function createUser(payload) {
+  try {
+    const { tenant } = payload;
+    const tenantData = await Tenant().fetchByName(tenant);
+    if (!tenantData) {
+      throw new ValidationError(TENANT.invalidTenant);
+    }
 
-exports.fetchById = function fetchById(userId) {
-  return SuperUser().fetchById(userId);
-};
+    setCurrentTenant(tenant);
 
-exports.authenticate = async function authenticate(email, password) {
-  const user = await SuperUser().fetchByEmail(email);
+    const userData = {
+      ...payload,
+      password: bcrypt.hashSync(payload.password),
+    };
 
-  if (!user || !bcrypt.compareSync(password, user.password)) {
-    throw new AuthenticationError(authMessage.incorrectPassword);
+    const user = await User().save(userData);
+
+    return user;
+  } catch (err) {
+    throw err;
   }
-
-  return user;
 };
 
-function updateUser(userId, updateData) {
-  return SuperUser().updateById(userId, updateData);
-}
+// exports.fetchAll = function fetchAll() {
+//   return SuperUser().fetchAll();
+// };
+
+// exports.fetchById = function fetchById(userId) {
+//   return SuperUser().fetchById(userId);
+// };
+
+// exports.authenticate = async function authenticate(email, password) {
+//   const user = await SuperUser().fetchByEmail(email);
+
+//   if (!user || !bcrypt.compareSync(password, user.password)) {
+//     throw new AuthenticationError(authMessage.incorrectPassword);
+//   }
+
+//   return user;
+// };
+
+// function updateUser(userId, updateData) {
+//   return SuperUser().updateById(userId, updateData);
+// }
 
 // function deleteUser(userId) {
 //   return SuperUser().deleteById(userId);

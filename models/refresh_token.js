@@ -1,5 +1,7 @@
 const mongoose = require('../config/database');
 
+const { getCurrentTenant } = require('../utils/storage');
+
 const Model = require('./base_model');
 const refreshTokenSchema = require('../schemas/refreshToken');
 const { collectionNames, createSchema } = require('../schemas/index');
@@ -9,7 +11,7 @@ class RefreshToken extends Model {
    * This constructs the RefreshToken model with predefined CRUD operations.
    */
   constructor(connection) {
-    const schema = createSchema(refreshTokenSchema, { timestamps: true });
+    const schema = refreshTokenSchema;
 
     schema.virtual('isExpired').get(function () {
       return Date.now() >= this.expiresAt;

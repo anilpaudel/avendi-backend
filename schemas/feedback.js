@@ -1,8 +1,8 @@
 const { Schema } = require('mongoose');
 
-const { collectionNames } = require('./index');
+const { collectionNames, createSchema } = require('./index');
 
-module.exports = {
+module.exports = createSchema({
   bookingId: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.BOOKING,
@@ -16,4 +16,4 @@ module.exports = {
     ref: collectionNames.USER,
     required: true,
   },
-};
+});

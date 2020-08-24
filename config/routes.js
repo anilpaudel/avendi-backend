@@ -38,16 +38,6 @@ publicRouter.get('/', (_, res) => {
 
 publicRouter.use('/admin', adminRoutes);
 
-/**
- * POST /api/auth/login
- */
-publicRouter.post('/auth/login', auth.login);
-publicRouter.post('/auth/refresh', auth.refresh);
-publicRouter.post(
-  '/user',
-  validateRequest(userValidationSchema.create),
-  userController.create
-);
 
 /**
  * Contains secured API routes for the application.
@@ -58,7 +48,12 @@ const privateRouter = Router();
  * Authentication middleware for private routes.
  */
 privateRouter.use(tenantHandler);
-// privateRouter.use(authenticateUser); // authentication middleware.
+/**
+ * POST /api/auth/login
+ */
+privateRouter.post('/auth/login', auth.login);
+privateRouter.post('/auth/refresh', auth.refresh);
+privateRouter.use(authenticateUser); // authentication middleware.
 privateRouter.use('/user', userRoutes);
 
 privateRouter.use('/room', roomRoutes);

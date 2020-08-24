@@ -12,45 +12,45 @@ exports.createRequest = async function (payload, guestId) {
       ...payload,
     };
 
-    const currentBooking = await Booking.findActiveBooking(guestId);
+    const currentBooking = await Booking().findActiveBooking(guestId);
 
     if (!currentBooking) {
       throw new CustomError('No active booking found.');
     }
 
     if (data && data.assignTo) {
-      const assignee = await User.fetchById(data.assignTo);
+      const assignee = await User().fetchById(data.assignTo);
 
       if (!assignee || (assignee && assignee.type === USER_TYPE.GUEST)) {
         throw new ValidationError('Invalid AssignTo id provided.');
       }
     }
 
-    return Request.save({ ...data, bookingId: currentBooking._id });
+    return Request().save({ ...data, bookingId: currentBooking._id });
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-exports.fetchAll = (type) => Request.fetchAll(type);
+exports.fetchAll = (type) => Request().fetchAll(type);
 
-exports.fetchById = (requestId) => Request.fetchById(requestId);
+exports.fetchById = (requestId) => Request().fetchById(requestId);
 
 exports.updateRequest = (requestId, updateData) =>
-  Request.updateById(requestId, updateData);
+  Request().updateById(requestId, updateData);
 
 exports.assignStaffToRequest = async function (requestId, staffId) {
-  const user = await User.fetchById(staffId);
+  const user = await User().fetchById(staffId);
 
   if (!user || (user && user.type === USER_TYPE.GUEST)) {
     throw new ValidationError('Invalid AssignTo id provided.');
   }
 
-  return Request.updateById(requestId, {
+  return Request().updateById(requestId, {
     assignTo: staffId,
     status: REQUEST_STATUS.IN_PROGRESS,
   });
 };
 
-exports.deleteRequest = (requestId) => Request.deleteById(requestId);
+exports.deleteRequest = (requestId) => Request().deleteById(requestId);

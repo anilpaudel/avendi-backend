@@ -2,14 +2,14 @@ const mongoose = require('../config/database');
 
 const Model = require('./base_model');
 const bookingSchema = require('../schemas/booking');
-const { collectionNames, createSchema } = require('../schemas/index');
+const { collectionNames } = require('../schemas/index');
 const { dateCheckout } = require('../schemas/booking');
 
 class Booking extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(
       collectionNames.BOOKING,
-      createSchema(bookingSchema, { timestamps: true })
+      bookingSchema
     );
 
     super(model);

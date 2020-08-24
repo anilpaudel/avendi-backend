@@ -5,10 +5,10 @@ const feedBackSchema = require('../schemas/feedback');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class FeedBack extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.FEEDBACK,
-      createSchema(feedBackSchema, { timestamps: true })
+      feedBackSchema
     );
 
     super(model);
@@ -29,4 +29,11 @@ class FeedBack extends Model {
   }
 }
 
-module.exports = new FeedBack();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new FeedBack(tenantConnection);
+};

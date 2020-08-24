@@ -5,11 +5,8 @@ const roomSchema = require('../schemas/room');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class Room extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.ROOM,
-      createSchema(roomSchema, { timestamps: true })
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.ROOM, roomSchema);
 
     super(model);
   }
@@ -17,7 +14,13 @@ class Room extends Model {
   fetchAll() {
     return this.model.find();
   }
-  
 }
 
-module.exports = new Room();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new Room(tenantConnection);
+};

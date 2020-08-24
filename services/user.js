@@ -21,14 +21,14 @@ async function createUser(payload) {
     const user = await User().save(userData);
 
     if (user.type != USER_TYPE.GUEST) {
-      const staffCounter = await Counter.fetchStaffCounter();
+      const staffCounter = await Counter().fetchStaffCounter();
       const staffData = {
         userId: user._id,
         department: userData.department,
         staffId: staffCounter.count,
       };
 
-      const staff = await Staff.save(staffData);
+      const staff = await Staff().save(staffData);
 
       const userObject = user.toJSON();
 
@@ -50,7 +50,7 @@ function fetchAll() {
 }
 
 async function fetchAllTeam() {
-  const staff = await Staff.fetchAll();
+  const staff = await Staff().fetchAll();
 
   return staff;
 }

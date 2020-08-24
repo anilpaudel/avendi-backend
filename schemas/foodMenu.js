@@ -1,8 +1,8 @@
 const { Schema } = require('mongoose');
 
-const { collectionNames } = require('./index');
+const { collectionNames, createSchema } = require('./index');
 
-module.exports = {
+module.exports = createSchema({
   price: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String, maxLength: 500 },
@@ -11,7 +11,7 @@ module.exports = {
     {
       type: Schema.Types.ObjectId,
       ref: collectionNames.MENU_CATEGORY,
-      required: true
+      required: true,
     },
   ],
-};
+});

@@ -1,9 +1,9 @@
 const { Schema } = require('mongoose');
 
-const { collectionNames } = require('./index');
+const { collectionNames, createSchema } = require('./index');
 const { EXTENSION_STATUS } = require('../constants/guestExtension');
 
-module.exports = {
+module.exports = createSchema({
   bookingId: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.BOOKING,
@@ -25,4 +25,4 @@ module.exports = {
     default: EXTENSION_STATUS.IN_PROGRESS,
     enum: Object.keys(EXTENSION_STATUS).map((key) => EXTENSION_STATUS[key]),
   },
-};
+});

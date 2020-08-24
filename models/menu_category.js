@@ -9,10 +9,7 @@ const { TENANT } = require('../constants/errorMessages');
 
 class MenuCategory extends Model {
   constructor(db) {
-    const model = db.model(
-      collectionNames.MENU_CATEGORY,
-      createSchema(categorySchema, { timestamps: true })
-    );
+    const model = db.model(collectionNames.MENU_CATEGORY, categorySchema);
 
     super(model);
   }

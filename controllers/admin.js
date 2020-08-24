@@ -33,7 +33,26 @@ exports.createAdmin = async (req, res, next) => {
   try {
     const body = req.body;
     body.type = USER_TYPE.ADMIN;
-    const data = await userService.createUser(body);
+    body.department = 'ADMIN';
+    const data = await adminService.createAdmin(body);
+
+    res.status(HttpStatus.OK).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Create user.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+exports.createUser = async (req, res, next) => {
+  try {
+    const body = req.body;
+    const data = await adminService.createUser(body);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

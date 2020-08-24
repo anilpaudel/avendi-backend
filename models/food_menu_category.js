@@ -5,14 +5,21 @@ const categorySchema = require('../schemas/foodMenuCategory');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class FoodMenuCategory extends Model {
-  constructor() {
-    const model = mongoose.model(
+  constructor(dbConnection) {
+    const model = dbConnection.model(
       collectionNames.FOOD_MENU_CATEGORY,
-      createSchema(categorySchema, { timestamps: true })
+      categorySchema
     );
 
     super(model);
   }
 }
 
-module.exports = new FoodMenuCategory();
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
+
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new FoodMenuCategory(tenantConnection);
+};

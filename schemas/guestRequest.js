@@ -1,9 +1,9 @@
 const { Schema } = require('mongoose');
 
-const { collectionNames } = require('./index');
+const { collectionNames, createSchema } = require('./index');
 const { REQUEST_STATUS } = require('../constants/guestRequest');
 
-module.exports = {
+module.exports = createSchema({
   bookingId: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.BOOKING,
@@ -23,4 +23,4 @@ module.exports = {
     default: REQUEST_STATUS.NOT_ASSIGNED,
     enum: Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key]),
   },
-};
+});

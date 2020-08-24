@@ -8,7 +8,7 @@ const { collectionNames, createSchema } = require('../schemas/index');
 
 class User extends Model {
   constructor(dbConnection) {
-    const schema = createSchema(userSchema);
+    const schema = userSchema
 
     schema.set('toJSON', {
       transform: function (doc, ret) {

@@ -14,7 +14,7 @@ exports.createFeedback = async function (payload, guestId) {
       ...payload,
     };
 
-    const currentBooking = await Booking.findActiveBooking(guestId);
+    const currentBooking = await Booking().findActiveBooking(guestId);
 
     if (!currentBooking) {
       throw new CustomError('No active booking found.');
@@ -22,14 +22,14 @@ exports.createFeedback = async function (payload, guestId) {
 
     feedbackData.bookingId = currentBooking._id;
 
-    const staff = await User.fetchById(feedbackData.staffId);
+    const staff = await User().fetchById(feedbackData.staffId);
 
     if (!staff || (staff && staff.type === USER_TYPE.GUEST)) {
       throw new ValidationError('Invalid Staff id provided.');
     }
 
     const feedback = await Feedback.save(feedbackData);
-    const message = await Message.save({
+    const message = await Message().save({
       from: guestId,
       to: feedbackData.staffId,
       message: feedbackData.comment || feedbackData.rating,

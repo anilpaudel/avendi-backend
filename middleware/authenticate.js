@@ -51,8 +51,7 @@ async function fetchUserByToken(token) {
 async function authenticateUser(req, res, next) {
   try {
     const token = extractTokenFromHeaders(req.headers);
-    const { TENANT } = req.headers;
-    const user = await fetchUserByToken(token, TENANT);
+    const user = await fetchUserByToken(token);
 
     req.token = token;
     req.currentUser = user;

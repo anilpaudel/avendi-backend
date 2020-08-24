@@ -5,11 +5,8 @@ const extensionRateSchema = require('../schemas/extensionRate');
 const { collectionNames, createSchema } = require('../schemas/index');
 
 class ExtensionRate extends Model {
-  constructor() {
-    const model = mongoose.model(
-      collectionNames.CATEGORY,
-      createSchema(extensionRateSchema, { timestamps: true })
-    );
+  constructor(dbConnection) {
+    const model = dbConnection.model(collectionNames.CATEGORY, extensionRateSchema);
 
     super(model);
   }
@@ -18,5 +15,11 @@ class ExtensionRate extends Model {
     return this.model.find();
   }
 }
+module.exports = () => {
+  const tenantConnection = getCurrentTenant();
 
-module.exports = new ExtensionRate();
+  if (!tenantConnection) {
+    throw new ValidationError(TENANT.invalidTenant);
+  }
+  return new ExtensionRate(tenantConnection);
+};
