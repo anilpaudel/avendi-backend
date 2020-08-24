@@ -17,6 +17,8 @@ class Message extends Model {
   }
 
   async fetchAll(staffId, guestId, filter = {}) {
+    staffId = staffId.toString();
+    guestId = guestId.toString();
     const page = filter.page ? parseInt(filter.page) : 1;
     const limit = filter.size ? parseInt(filter.size) : 20;
     const options = {
@@ -44,8 +46,7 @@ class Message extends Model {
       },
       options
     );
-
-    return { data: result.docs };
+    return result.docs;
   }
 }
 

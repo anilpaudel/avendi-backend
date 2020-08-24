@@ -27,7 +27,8 @@ exports.configure = function configure(io) {
 
         socket.on("request_message", async data =>{
           console.log("Received request_message", data);
-          var messages = messageService.fetchAll(user._id, data.to)
+          var messages = await messageService.fetchAll(user._id, data.to);
+          //console.log(messages)
           io.emit("got_messages", {messages:messages});
         });
 
@@ -38,7 +39,7 @@ exports.configure = function configure(io) {
     }
 
     socket.on("disconnect", () => {
-      console.log("Disconnected.")
+      console.log("socket disconnected.")
     })
 
 
