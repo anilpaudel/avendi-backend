@@ -15,6 +15,10 @@ class Staff extends Model {
   fetchAll() {
     return this.model.find().populate('userId');
   }
+
+  deleteByUserId(userId) {
+    return this.model.findOneAndDelete({ userId });
+  }
 }
 
 module.exports = () => {

@@ -1,4 +1,5 @@
 const FoodMenu = require('../models/food_menu');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createFoodMenu = function (payload) {
   try {
@@ -32,11 +33,26 @@ exports.fetchAll = async () => {
 
 exports.fetchById = async (foodMenuId) => {
   const menu = await FoodMenu().fetchById(foodMenuId);
-  
+
+  if (!menu) {
+    throw new NotFoundError();
+  }
+
   return formatMenu(menu);
 };
 
-exports.updateFoodMenu = (foodMenuId, updateData) =>
-  FoodMenu().updateById(foodMenuId, updateData);
+exports.updateFoodMenu = async (foodMenuId, updateData) => {
+  const menu = await FoodMenu().updateById(foodMenuId, updateData);
+  if (!menu) {
+    throw new NotFoundError();
+  }
 
-exports.deleteFoodMenu = (foodMenuId) => FoodMenu().deleteById(foodMenuId);
+  return formatMenu(menu);
+};
+
+exports.deleteFoodMenu = async (foodMenuId) => {
+  const menu = await FoodMenu().deleteById(foodMenuId);
+  if (!menu) {
+    throw new NotFoundError();
+  }
+};

@@ -1,5 +1,5 @@
-
 const Service = require('../models/service');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createService = function (payload) {
   try {
@@ -16,9 +16,29 @@ exports.createService = function (payload) {
 
 exports.fetchAll = () => Service().fetchAll();
 
-exports.fetchById = (serviceId) => Service().fetchById(serviceId);
+exports.fetchById = async (serviceId) => {
+  const service = await Service().fetchById(serviceId);
+  if (!service) {
+    throw new NotFoundError();
+  }
 
-exports.updateService = (serviceId, updateData) =>
-  Service().updateById(serviceId, updateData);
+  return service;
+};
 
-exports.deleteService = (serviceId) => Service().deleteById(serviceId)
+exports.updateService = async (serviceId, updateData) => {
+  const service = await Service().updateById(serviceId, updateData);
+
+  if (!service) {
+    throw new NotFoundError();
+  }
+
+  return service;
+};
+
+exports.deleteService = async (serviceId) => {
+  const service = await Service().deleteById(serviceId);
+
+  if (!service) {
+    throw new NotFoundError();
+  }
+};

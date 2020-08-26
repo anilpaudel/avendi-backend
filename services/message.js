@@ -1,4 +1,5 @@
 const Message = require('../models/message');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createMessage = function (payload) {
   try {
@@ -16,6 +17,12 @@ exports.createMessage = function (payload) {
 exports.fetchAll = (staffId, guestId, filters) =>
   Message().fetchAll(staffId, guestId, filters);
 
-exports.fetchById = (messageId) => Message().fetchById(messageId);
+exports.fetchById = async (messageId) => {
+  const message = await Message().fetchById(messageId);
 
-exports.deleteRoom = (messageId) => Room.deleteById(messageId);
+  if (!message) {
+    throw new NotFoundError();
+  }
+
+  return message;
+};

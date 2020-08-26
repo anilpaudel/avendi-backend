@@ -1,6 +1,6 @@
-
 const Room = require('../models/room');
 const AuthenticationError = require('../lib/errors/authentication');
+const NotFoundError = require('../lib/errors/notFoundError');
 //const authMessage = require('../constants/messages').AUTH;
 
 exports.createRoom = function (payload) {
@@ -18,9 +18,30 @@ exports.createRoom = function (payload) {
 
 exports.fetchAll = () => Room().fetchAll();
 
-exports.fetchById = (roomId) => Room().fetchById(roomId);
+exports.fetchById = async (roomId) => {
+  const room = await Room().fetchById(roomId);
 
-exports.updateRoom = (roomId, updateData) =>
-  Room().updateById(roomId, updateData);
+  if (!room) {
+    throw new NotFoundError();
+  }
 
-exports.deleteRoom = (roomId) => Room().deleteById(roomId)
+  return room;
+};
+
+exports.updateRoom = async (roomId, updateData) => {
+  const room = await Room().updateById(roomId, updateData);
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+
+  return room;
+};
+
+exports.deleteRoom = async (roomId) => {
+  const room = await Room().deleteById(roomId);
+
+  if (!room) {
+    throw new NotFoundError();
+  }
+};

@@ -1,4 +1,5 @@
 const ExtensionRate = require('../models/extension-rate');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createExtensionRate = function (payload) {
   try {
@@ -15,11 +16,35 @@ exports.createExtensionRate = function (payload) {
 
 exports.fetchAll = () => ExtensionRate().fetchAll();
 
-exports.fetchById = (extensionRateId) =>
-  ExtensionRate().fetchById(extensionRateId);
+exports.fetchById = async (extensionRateId) => {
+  const extensionRate = await ExtensionRate().fetchById(extensionRateId);
 
-exports.updateExtensionRate = (extensionRateId, updateData) =>
-  ExtensionRate().updateById(extensionRateId, updateData);
+  if (!extensionRate) {
+    throw new NotFoundError();
+  }
 
-exports.deleteExtensionRate = (extensionRateId) =>
-  ExtensionRate().deleteById(extensionRateId);
+  return extensionRate;
+};
+
+exports.updateExtensionRate = async (extensionRateId, updateData) => {
+  const extensionRate = await ExtensionRate().updateById(
+    extensionRateId,
+    updateData
+  );
+
+  if (!extensionRate) {
+    throw new NotFoundError();
+  }
+
+  return extensionRate;
+};
+
+exports.deleteExtensionRate = async (extensionRateId) => {
+  const extensionRate = await ExtensionRate().deleteById(extensionRateId);
+
+  if (!extensionRate) {
+    throw new NotFoundError();
+  }
+
+  return extensionRate;
+};

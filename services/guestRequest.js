@@ -5,6 +5,7 @@ const Request = require('../models/guest_request');
 const CustomError = require('../lib/errors/customError');
 const ValidationError = require('../lib/errors/validation');
 const { REQUEST_STATUS } = require('../constants/guestRequest');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createRequest = async function (payload, guestId) {
   try {
@@ -35,10 +36,23 @@ exports.createRequest = async function (payload, guestId) {
 
 exports.fetchAll = (type) => Request().fetchAll(type);
 
-exports.fetchById = (requestId) => Request().fetchById(requestId);
+exports.fetchById = async (requestId) => {
+  const request = await Request().fetchById(requestId);
+  if (!request) {
+    throw new NotFoundError();
+  }
 
-exports.updateRequest = (requestId, updateData) =>
-  Request().updateById(requestId, updateData);
+  return request;
+};
+
+exports.updateRequest = async (requestId, updateData) => {
+  const request = await Request().updateById(requestId, updateData);
+  if (!request) {
+    throw new NotFoundError();
+  }
+
+  return request;
+};
 
 exports.assignStaffToRequest = async function (requestId, staffId) {
   const user = await User().fetchById(staffId);
@@ -47,10 +61,20 @@ exports.assignStaffToRequest = async function (requestId, staffId) {
     throw new ValidationError('Invalid AssignTo id provided.');
   }
 
-  return Request().updateById(requestId, {
+  const request = await Request().updateById(requestId, {
     assignTo: staffId,
     status: REQUEST_STATUS.IN_PROGRESS,
   });
+  if (!request) {
+    throw new NotFoundError();
+  }
+
+  return request;
 };
 
-exports.deleteRequest = (requestId) => Request().deleteById(requestId);
+exports.deleteRequest = async (requestId) => {
+  const request = await Request().deleteById(requestId);
+  if (!request) {
+    throw new NotFoundError();
+  }
+};

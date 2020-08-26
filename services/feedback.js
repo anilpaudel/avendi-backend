@@ -6,6 +6,7 @@ const AuthenticationError = require('../lib/errors/authentication');
 const ValidationError = require('../lib/errors/validation');
 const CustomError = require('../lib/errors/customError');
 const { USER_TYPE } = require('../constants/user');
+const NotFoundError = require('../lib/errors/notFoundError');
 //const authMessage = require('../constants/messages').AUTH;
 
 exports.createFeedback = async function (payload, guestId) {
@@ -68,13 +69,24 @@ exports.fetchById = async (feedbackId) => {
   const data = await Feedback().fetchById(feedbackId);
 
   if (!data) {
-    return {};
+    throw new NotFoundError();
   }
 
   return formatFeedbackData(data);
 };
 
-exports.updateFeedback = (feedbackId, updateData) =>
-  Feedback().updateById(feedbackId, updateData);
+exports.updateFeedback = async (feedbackId, updateData) => {
+  const feedback = await Feedback().updateById(feedbackId, updateData);
+  if (!feedback) {
+    throw new NotFoundError();
+  }
 
-exports.deleteFeedback = (feedbackId) => Feedback().deleteById(feedbackId);
+  return feedback;
+};
+
+exports.deleteFeedback = async (feedbackId) => {
+  const feedback = await Feedback().deleteById(feedbackId);
+  if (!feedback) {
+    throw new NotFoundError();
+  }
+};

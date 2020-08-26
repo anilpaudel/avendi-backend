@@ -4,6 +4,7 @@ const { USER_TYPE } = require('../constants/user');
 const Extension = require('../models/guest_extension');
 const ExtensionRate = require('../models/extension-rate');
 const ValidationError = require('../lib/errors/validation');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createExtension = async function (payload, guestId) {
   try {
@@ -43,7 +44,14 @@ exports.createExtension = async function (payload, guestId) {
 
 exports.fetchAll = () => Extension().fetchAll();
 
-exports.fetchById = (extensionId) => Extension().fetchById(extensionId);
+exports.fetchById = async (extensionId) => {
+  const extension = await Extension().fetchById(extensionId);
+  if (!extension) {
+    throw new NotFoundError();
+  }
+
+  return extension;
+};
 
 exports.updateExtension = async (extensionId, updateData) => {
   if (updateData.rateId) {
@@ -52,7 +60,13 @@ exports.updateExtension = async (extensionId, updateData) => {
       throw new ValidationError('Invalid extension rate provided.');
     }
   }
-  return Extension().updateById(extensionId, updateData);
+  const extension = await Extension().updateById(extensionId, updateData);
+
+  if (!extension) {
+    throw new NotFoundError();
+  }
+
+  return extension;
 };
 
 exports.assignStaffToExtension = async function (extensionId, staffId) {
@@ -62,9 +76,20 @@ exports.assignStaffToExtension = async function (extensionId, staffId) {
     throw new ValidationError('Invalid AssignTo id provided.');
   }
 
-  return Extension().updateById(extensionId, {
+  const extension = await Extension().updateById(extensionId, {
     assignTo: staffId,
   });
+
+  if (!extension) {
+    throw new NotFoundError();
+  }
+
+  return extension;
 };
 
-exports.deleteExtension = (extensionId) => Extension().deleteById(extensionId);
+exports.deleteExtension = async (extensionId) => {
+  const extension = await Extension().deleteById(extensionId);
+  if (!extension) {
+    throw new NotFoundError();
+  }
+};

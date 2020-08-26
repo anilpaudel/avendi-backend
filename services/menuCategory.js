@@ -1,5 +1,5 @@
-
 const MenuCategory = require('../models/menu_category');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 exports.createMenuCategory = function (payload) {
   try {
@@ -16,9 +16,27 @@ exports.createMenuCategory = function (payload) {
 
 exports.fetchAll = () => MenuCategory().fetchAll();
 
-exports.fetchById = (menuCategoryId) => MenuCategory().fetchById(menuCategoryId);
+exports.fetchById = async (menuCategoryId) => {
+  const category = await MenuCategory().fetchById(menuCategoryId);
+  if (!category) {
+    throw new NotFoundError();
+  }
 
-exports.updateMenuCategory = (menuCategoryId, updateData) =>
-  MenuCategory().updateById(menuCategoryId, updateData);
+  return category;
+};
 
-exports.deleteMenuCategory = (menuCategoryId) => MenuCategory().deleteById(menuCategoryId)
+exports.updateMenuCategory = async (menuCategoryId, updateData) => {
+  const category = await MenuCategory().updateById(menuCategoryId, updateData);
+  if (!category) {
+    throw new NotFoundError();
+  }
+
+  return category;
+};
+
+exports.deleteMenuCategory = async (menuCategoryId) => {
+  const category = await MenuCategory().deleteById(menuCategoryId);
+  if (!category) {
+    throw new NotFoundError();
+  }
+};

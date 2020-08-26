@@ -10,6 +10,7 @@ const { addTimestampToFilename } = require('../utils/string');
 const authMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 const CustomError = require('../lib/errors/customError');
+const NotFoundError = require('../lib/errors/notFoundError');
 
 async function createUser(payload) {
   try {
@@ -55,8 +56,14 @@ async function fetchAllTeam() {
   return staff;
 }
 
-function fetchById(userId) {
-  return User().fetchById(userId);
+async function fetchById(userId) {
+  const user = await User().fetchById(userId);
+
+  if (!user) {
+    throw new NotFoundError();
+  }
+
+  return user;
 }
 
 async function authenticate(email, password) {
@@ -69,16 +76,33 @@ async function authenticate(email, password) {
   return user;
 }
 
-function updateUser(userId, updateData) {
-  return User().updateById(userId, updateData);
+async function updateUser(userId, updateData) {
+  const user = await User().updateById(userId, updateData);
+
+  if (!user) {
+    throw new NotFoundError();
+  }
+
+  return user;
 }
 
-function deleteUser(userId) {
-  return User().deleteById(userId);
+async function deleteUser(userId) {
+  const user = await User().deleteById(userId);
+
+  if (!user) {
+    throw new NotFoundError();
+  }
+
+  await Staff().deleteByUserId(userId);
 }
 
 async function uploadUserImage(userId, file) {
   try {
+    const findUser = await User().fetchById(userId);
+    if (!findUser) {
+      throw new NotFoundError();
+    }
+
     const imageBucketName = config.aws.imageBucketName;
     const folderName = config.aws.imageFolder;
     const filename = addTimestampToFilename(file.originalname);

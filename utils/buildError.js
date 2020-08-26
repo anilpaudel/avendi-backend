@@ -2,9 +2,9 @@ const HttpStatus = require('http-status-codes');
 const MongooseError = require('mongoose').Error;
 
 const CustomError = require('../lib/errors/customError');
-const NotFoundError = require('../lib/errors/notFound');
 const ForbiddenError = require('../lib/errors/forbidden');
 const ValidationError = require('../lib/errors/validation');
+const NotFoundError = require('../lib/errors/notFoundError');
 const AuthenticationError = require('../lib/errors/authentication');
 const ServiceUnavailableError = require('../lib/errors/serviceUnavailable');
 
