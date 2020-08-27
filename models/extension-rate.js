@@ -8,7 +8,7 @@ const { getCurrentTenant } = require('../utils/storage');
 class ExtensionRate extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(
-      collectionNames.CATEGORY,
+      collectionNames.EXTENSION_RATE,
       extensionRateSchema
     );
 

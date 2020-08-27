@@ -25,8 +25,8 @@ exports.configure = function configure(app) {
   debug('configuring middleware.');
 
   app.use(bodyParser.json({ limit: '8mb' }));
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParserErrorHandler)
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParserErrorHandler);
 
   // provide a stream for morgan to write to
   const stream = {

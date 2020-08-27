@@ -12,14 +12,18 @@ const AuthenticationError = require('../lib/errors/authentication');
 const CustomError = require('../lib/errors/customError');
 const NotFoundError = require('../lib/errors/notFoundError');
 
-async function createUser(payload) {
+async function createUser(payload, image) {
   try {
     const userData = {
       ...payload,
       password: bcrypt.hashSync(payload.password),
     };
 
-    const user = await User().save(userData);
+    let user = await User().save(userData);
+
+    if (image) {
+      user = await uploadUserImage(user._id, image);
+    }
 
     if (user.type != USER_TYPE.GUEST) {
       const staffCounter = await Counter().fetchStaffCounter();

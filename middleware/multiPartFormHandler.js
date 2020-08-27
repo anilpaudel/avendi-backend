@@ -35,7 +35,7 @@ function getMulterOptions(storage, maxFileSize, validFileExtensions = []) {
  * @param {Object} res
  * @param {Function} next
  */
-function parseMultiPartFormData(req, res, next) {
+function parseMultiPartFormDataImage(req, res, next) {
   const multerStorage = multer.memoryStorage();
   const multerOptions = getMulterOptions(
     multerStorage,
@@ -60,6 +60,35 @@ function parseMultiPartFormData(req, res, next) {
   });
 }
 
+/**
+ * Parsing and validating the form data.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+function parseMultiPartFormData(req, res, next) {
+  const multerStorage = multer.memoryStorage();
+  const multerOptions = getMulterOptions(
+    multerStorage,
+    MAX_IMAGE_SIZE,
+    VALID_IMAGE_EXTENSIONS
+  );
+
+  const mutlerInstance = multer(multerOptions).single('image');
+
+  mutlerInstance(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return next(new ValidationError('Error while parsing the request body.'));
+    } else if (err) {
+      return next(err);
+    }
+
+    next();
+  });
+}
+
 module.exports = {
   parseMultiPartFormData,
+  parseMultiPartFormDataImage,
 };

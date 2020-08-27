@@ -22,6 +22,13 @@ class FoodMenu extends Model {
   fetchById(id) {
     return this.model.findById(id).populate('categoryId').lean();
   }
+
+  updateById(id, payload) {
+    return this.model
+      .findByIdAndUpdate({ _id: id }, payload, { new: true })
+      .populate('categoryId')
+      .lean();
+  }
 }
 
 module.exports = () => {

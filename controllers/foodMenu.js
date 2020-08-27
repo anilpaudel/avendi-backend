@@ -7,7 +7,8 @@ const foodMenuService = require('../services/foodMenu');
  */
 exports.create = async (req, res, next) => {
   try {
-    const data = await foodMenuService.createFoodMenu(req.body);
+    const image = req.file;
+    const data = await foodMenuService.createFoodMenu(req.body, image);
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);
@@ -66,6 +67,22 @@ exports.deleteFoodMenu = async (req, res, next) => {
     await foodMenuService.deleteFoodMenu(foodMenuId);
 
     res.status(HttpStatus.OK).json({});
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * add menu image.
+ */
+exports.addMenuImage = async (req, res, next) => {
+  try {
+    const { foodMenuId } = req.params;
+    const image = req.file;
+
+    const data = await foodMenuService.uploadMenuImage(foodMenuId, image);
+
+    res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);
   }

@@ -5,6 +5,7 @@ const validateRequest = require('../middleware/requestValidator');
 const userValidationSchema = require('../validators/userValidator');
 const {
   parseMultiPartFormData,
+  parseMultiPartFormDataImage,
 } = require('../middleware/multiPartFormHandler');
 
 const router = Router();
@@ -24,6 +25,7 @@ router.get('/:userId', userController.fetchById);
  */
 router.post(
   '/',
+  parseMultiPartFormData,
   validateRequest(userValidationSchema.create),
   userController.create
 );
@@ -47,7 +49,7 @@ router.put(
  */
 router.post(
   '/:userId/image',
-  parseMultiPartFormData,
+  parseMultiPartFormDataImage,
   userController.uploadImage
 );
 

@@ -3,6 +3,10 @@ const { Router } = require('express');
 const foodMenuController = require('../controllers/foodMenu');
 const requestValidator = require('../middleware/requestValidator');
 const foodMenuValidationSchema = require('../validators/foodMenuValidator');
+const {
+  parseMultiPartFormData,
+  parseMultiPartFormDataImage,
+} = require('../middleware/multiPartFormHandler');
 
 const router = Router();
 
@@ -21,6 +25,7 @@ router.get('/:foodMenuId', foodMenuController.fetchById);
  */
 router.post(
   '/',
+  parseMultiPartFormData,
   requestValidator(foodMenuValidationSchema.create),
   foodMenuController.create
 );
@@ -37,6 +42,15 @@ router.put(
   '/:foodMenuId',
   requestValidator(foodMenuValidationSchema.update),
   foodMenuController.updateFoodMenu
+);
+
+/**
+ * PUT /api/food-menu/:foodMenuId/image
+ */
+router.post(
+  '/:foodMenuId/image',
+  parseMultiPartFormDataImage,
+  foodMenuController.addMenuImage
 );
 
 module.exports = router;
