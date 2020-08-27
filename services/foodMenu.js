@@ -1,6 +1,7 @@
 const config = require('../config/env');
 const FoodMenu = require('../models/food_menu');
 const NotFoundError = require('../lib/errors/notFoundError');
+const CustomError = require('../lib/errors/customError');
 const { uploadToS3 } = require('../utils/uploadToS3');
 const { addTimestampToFilename } = require('../utils/string');
 
