@@ -2,16 +2,24 @@ const HttpStatus = require('http-status-codes');
 
 const extensionService = require('../services/guestExtension');
 const CustomError = require('../lib/errors/customError');
+const { USER_TYPE } = require('../constants/user');
+const ValidationError = require('../lib/errors/validation');
 
 /**
  * Add extension.
  */
 exports.create = async (req, res, next) => {
   try {
-    const data = await extensionService.createExtension(
-      req.body,
-      req.currentUser._id
-    );
+    const guestId =
+      req.currentUser.type !== USER_TYPE.GUEST
+        ? req.body.guestId
+        : req.currentUser._id;
+
+    if (!guestId) {
+      throw new ValidationError('Guest Id not provided.');
+    }
+
+    const data = await extensionService.createExtension(req.body, guestId);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
@@ -24,7 +32,6 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-
     const data = await extensionService.fetchAll();
 
     res.status(HttpStatus.OK).json({ data });
@@ -56,7 +63,10 @@ exports.updateExtension = async (req, res, next) => {
     const { extensionId } = req.params;
     const updatePayload = req.body;
 
-    const data = await extensionService.updateExtension(extensionId, updatePayload);
+    const data = await extensionService.updateExtension(
+      extensionId,
+      updatePayload
+    );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);
@@ -75,7 +85,10 @@ exports.assignToExtension = async (req, res, next) => {
       throw new CustomError('No assignTo user Id provided', 400);
     }
 
-    const data = await extensionService.assignStaffToExtension(extensionId, assignTo);
+    const data = await extensionService.assignStaffToExtension(
+      extensionId,
+      assignTo
+    );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);

@@ -13,6 +13,12 @@ exports.createRequest = async function (payload, guestId) {
       ...payload,
     };
 
+    const guest = await User().fetchById(guestId);
+
+    if (!guest || guest.type !== USER_TYPE.GUEST) {
+      throw new ValidationError('Invalid guest Id provided.');
+    }
+
     const currentBooking = await Booking().findActiveBooking(guestId);
 
     if (!currentBooking) {

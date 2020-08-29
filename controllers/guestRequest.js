@@ -2,16 +2,24 @@ const HttpStatus = require('http-status-codes');
 
 const CustomError = require('../lib/errors/customError');
 const requestService = require('../services/guestRequest');
+const { USER_TYPE } = require('../constants/user');
+const ValidationError = require('../lib/errors/validation');
 
 /**
  * Add request.
  */
 exports.create = async (req, res, next) => {
   try {
-    const data = await requestService.createRequest(
-      req.body,
-      req.currentUser._id
-    );
+    const guestId =
+      req.currentUser.type !== USER_TYPE.GUEST
+        ? req.body.guestId
+        : req.currentUser._id;
+
+    if (!guestId) {
+      throw new ValidationError('Guest Id not provided.');
+    }
+
+    const data = await requestService.createRequest(req.body, guestId);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

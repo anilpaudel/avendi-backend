@@ -14,6 +14,7 @@ const create = Joi.object({
     .optional(),
   rateId: Joi.string().label('Rate id').trim().required(),
   assignedTo: Joi.string().label('Assigned To').optional(),
+  guestId: Joi.string().label('Guest Id').trim().optional(),
 });
 
 const update = Joi.object({

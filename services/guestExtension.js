@@ -12,6 +12,12 @@ exports.createExtension = async function (payload, guestId) {
       ...payload,
     };
 
+    const guest = await User().fetchById(guestId);
+
+    if (!guest || guest.type !== USER_TYPE.GUEST) {
+      throw new ValidationError('Invalid guest Id provided.');
+    }
+
     if (data && data.assignTo) {
       const assignee = await User().fetchById(data.assignTo);
 

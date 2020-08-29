@@ -25,7 +25,7 @@ router.post(
   '/',
   requestValidator(requestValidationSchema.create),
   requestController.create
-); //only guest can create request
+);
 
 /**
  * DELETE /api/request/:requestId
@@ -44,9 +44,6 @@ router.put(
 /**
  * PUT /api/request/:requestId/assign
  */
-router.put(
-  '/:requestId/assign',
-  requestController.assignToRequest
-);
+router.put('/:requestId/assign', requestController.assignToRequest);
 
 module.exports = router;

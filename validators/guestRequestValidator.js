@@ -14,6 +14,7 @@ const create = Joi.object({
     .valid(...Object.keys(REQUEST_STATUS).map((key) => REQUEST_STATUS[key]))
     .optional(),
   assignedTo: Joi.string().label('Assigned To').optional(),
+  guestId: Joi.string().label('Guest Id').trim().optional(),
 });
 
 const update = Joi.object({

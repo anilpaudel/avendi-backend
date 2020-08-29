@@ -23,10 +23,9 @@ router.get('/:extensionId', extensionController.fetchById);
  */
 router.post(
   '/',
-  validateUserType([USER_TYPE.GUEST]),
   requestValidator(extensionValidationSchema.create),
   extensionController.create
-); //only guest can create guest-extension
+);
 
 /**
  * DELETE /api/guest-extension/:extensionId
