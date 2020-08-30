@@ -13,6 +13,7 @@ exports.createSchema = (schema, options = {}) => {
 };
 
 exports.collectionNames = {
+  HOTEL_DETAILS: 'hotelDetails',
   USER: 'user',
   FEEDBACK: 'Feedback',
   MESSAGE: 'Message',
@@ -26,5 +27,5 @@ exports.collectionNames = {
   REFRESH_TOKEN: 'refreshToken',
   STAFF: 'staff',
   COUNTER: 'counter',
-  EXTENSION_RATE: 'extensionRate'
+  EXTENSION_RATE: 'extensionRate',
 };

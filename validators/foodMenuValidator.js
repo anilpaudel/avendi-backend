@@ -9,7 +9,7 @@ const create = Joi.object({
     .max(500)
     .required(),
   name: Joi.string().label('Name').trim().min(1).max(500).required(),
-  categoryId: Joi.array().label('type').items(Joi.string()).min(1).required(),
+  categories: Joi.string().label('Categories').min(1).required(),
 });
 
 const update = Joi.object({
@@ -21,7 +21,7 @@ const update = Joi.object({
     .max(500)
     .optional(),
   name: Joi.string().label('Name').trim().min(1).max(500).optional(),
-  categoryId: Joi.array().label('type').items(Joi.string()).min(1).optional(),
+  categories: Joi.string().label('categories').min(1).optional(),
 });
 
 module.exports = {

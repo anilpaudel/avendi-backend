@@ -49,7 +49,8 @@ exports.updateFoodMenu = async (req, res, next) => {
     const updatePayload = req.body;
     const data = await foodMenuService.updateFoodMenu(
       foodMenuId,
-      updatePayload
+      updatePayload,
+      req.file
     );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

@@ -40,6 +40,7 @@ router.delete('/:userId', userController.deleteUser);
  */
 router.put(
   '/:userId',
+  parseMultiPartFormData,
   validateRequest(userValidationSchema.update),
   userController.updateUser
 );

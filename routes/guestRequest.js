@@ -1,8 +1,8 @@
 const { Router } = require('express');
 
 const { USER_TYPE } = require('../constants/user');
-const requestController = require('../controllers/guestRequest');
 const validateUserType = require('../middleware/roleValidator');
+const requestController = require('../controllers/guestRequest');
 const requestValidator = require('../middleware/requestValidator');
 const requestValidationSchema = require('../validators/guestRequestValidator');
 

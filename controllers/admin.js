@@ -12,9 +12,27 @@ const { USER_TYPE } = require('../constants/user');
  */
 exports.createTenant = async (req, res, next) => {
   try {
-    const { tenant } = req.body;
+    const data = await adminService.createTenant(req.body);
 
-    const data = await adminService.createTenant({ tenant });
+    res.status(HttpStatus.OK).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Update Tenant.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+exports.updateTenant = async (req, res, next) => {
+  try {
+    const tenantData = req.body;
+    const { tenantId } = req.params;
+
+    const data = await adminService.updateTenant(tenantId, tenantData);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

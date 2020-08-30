@@ -5,14 +5,19 @@ const bookingSchema = require('../schemas/booking');
 const { collectionNames } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
 
+const Room = require('./room');
+const User = require('./user');
+
 class Booking extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(collectionNames.BOOKING, bookingSchema);
 
     super(model);
+    Room();
+    User();
   }
   fetchAll() {
-    return this.model.find();
+    return this.model.find().populate('guestId roomId');
   }
 
   findActiveBooking(guestId) {

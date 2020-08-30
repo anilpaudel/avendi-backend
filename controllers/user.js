@@ -84,7 +84,7 @@ exports.updateUser = async (req, res, next) => {
     const { userId } = req.params;
     const updatePayload = req.body;
 
-    const data = await userService.updateUser(userId, updatePayload);
+    const data = await userService.updateUser(userId, updatePayload, req.file);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

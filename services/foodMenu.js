@@ -16,7 +16,7 @@ exports.createFoodMenu = async function (payload, image) {
       return menu;
     }
 
-    return await uploadMenuImage(menu._id, file);
+    return await uploadMenuImage(menu._id, image);
   } catch (err) {
     console.log(err);
     throw err;
@@ -54,14 +54,14 @@ const uploadMenuImage = async function uploadMenuImage(menuId, file) {
 exports.uploadMenuImage = uploadMenuImage;
 
 const formatMenu = (menu) => {
-  const updatedMenu = { ...menu };
+  // const updatedMenu = { ...menu };
 
-  updatedMenu.categories =
-    menu.categoryId && menu.categoryId.map((category) => category.name);
+  // updatedMenu.categories =
+  //   menu.categoryId && menu.categoryId.map((category) => category.name);
 
-  delete updatedMenu.categoryId;
+  // delete updatedMenu.categoryId;
 
-  return updatedMenu;
+  return menu;
 };
 
 exports.fetchAll = async () => {
@@ -80,13 +80,17 @@ exports.fetchById = async (foodMenuId) => {
   return formatMenu(menu);
 };
 
-exports.updateFoodMenu = async (foodMenuId, updateData) => {
+exports.updateFoodMenu = async (foodMenuId, updateData, image) => {
   const menu = await FoodMenu().updateById(foodMenuId, updateData);
   if (!menu) {
     throw new NotFoundError();
   }
 
-  return formatMenu(menu);
+  if (!image) {
+    return formatMenu(menu);
+  }
+
+  return uploadMenuImage(foodMenuId, image);
 };
 
 exports.deleteFoodMenu = async (foodMenuId) => {

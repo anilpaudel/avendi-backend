@@ -80,14 +80,18 @@ async function authenticate(email, password) {
   return user;
 }
 
-async function updateUser(userId, updateData) {
+async function updateUser(userId, updateData, file) {
   const user = await User().updateById(userId, updateData);
 
   if (!user) {
     throw new NotFoundError();
   }
 
-  return user;
+  if (!file) {
+    return user;
+  }
+
+  return uploadUserImage(userId, file);
 }
 
 async function deleteUser(userId) {

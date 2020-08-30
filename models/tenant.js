@@ -2,10 +2,8 @@ const mongoose = require('../config/database');
 
 const Model = require('./base_model');
 const { collectionNames, createSchema } = require('../schemas/index');
+const schema = require('../schemas/tenant');
 
-const schema = createSchema({
-  tenant: { type: String, unique: true, required: true },
-});
 class Tenant extends Model {
   constructor() {
     const model = mongoose.model('tenant', schema);

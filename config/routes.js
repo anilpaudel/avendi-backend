@@ -19,6 +19,7 @@ const requestRoutes = require('../routes/guestRequest');
 const extensionRoutes = require('../routes/guestExtension');
 const extensionRateRoutes = require('../routes/extensionRate');
 const adminRoutes = require('../routes/admin');
+const tenantRoutes = require('../routes/tenant');
 
 const userController = require('../controllers/user');
 const validateRequest = require('../middleware/requestValidator');
@@ -38,7 +39,6 @@ publicRouter.get('/', (_, res) => {
 
 publicRouter.use('/admin', adminRoutes);
 
-
 /**
  * Contains secured API routes for the application.
  */
@@ -55,6 +55,7 @@ privateRouter.post('/auth/login', auth.login);
 privateRouter.post('/auth/refresh', auth.refresh);
 privateRouter.use(authenticateUser); // authentication middleware.
 privateRouter.use('/user', userRoutes);
+privateRouter.use('/tenant', tenantRoutes);
 
 privateRouter.use('/room', roomRoutes);
 privateRouter.use('/booking', bookingRoutes);

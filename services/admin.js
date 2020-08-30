@@ -27,8 +27,7 @@ exports.fetchAll = () => Tenant().fetchAll();
 
 exports.fetchByTenantName = (tenantName) => Tenant().fetchByName(tenantName);
 
-exports.updateTenant = (tenantName, updateData) =>
-  Tenant().updateByTenantName(tenantName, updateData);
+exports.updateTenant = (id, updateData) => Tenant().updateById(id, updateData);
 
 exports.deleteTenant = (tenantName) => Tenant().deleteByTenantName(tenantName);
 

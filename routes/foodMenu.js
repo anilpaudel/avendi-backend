@@ -40,6 +40,7 @@ router.delete('/:foodMenuId', foodMenuController.deleteFoodMenu);
  */
 router.put(
   '/:foodMenuId',
+  parseMultiPartFormData,
   requestValidator(foodMenuValidationSchema.update),
   foodMenuController.updateFoodMenu
 );

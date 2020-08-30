@@ -5,6 +5,7 @@ const authController = require('../controllers/auth');
 
 const validateRequest = require('../middleware/requestValidator');
 const adminUserValidationSchema = require('../validators/adminUserValidator');
+const tenantValidator = require('../validators/tenantValidator');
 const { authenticateUser } = require('../middleware/authenticate');
 const requestValidator = require('../middleware/requestValidator');
 
@@ -38,7 +39,20 @@ router.get('/tenant', adminController.fetchAllTenant);
 /**
  * POST /api/admin/tenant
  */
-router.post('/tenant', adminController.createTenant);
+router.post(
+  '/tenant',
+  requestValidator(adminUserValidationSchema.create),
+  adminController.createTenant
+);
+
+/**
+ * PUT /api/admin/tenant/:tenantId
+ */
+router.post(
+  '/tenant/:tenantId',
+  requestValidator(adminUserValidationSchema.update),
+  adminController.createTenant
+);
 
 /**
  * POST /api/admin/user

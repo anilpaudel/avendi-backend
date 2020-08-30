@@ -7,11 +7,5 @@ module.exports = createSchema({
   name: { type: String, required: true },
   description: { type: String, maxLength: 500 },
   image: { type: String },
-  categoryId: [
-    {
-      type: Schema.ObjectId,
-      ref: collectionNames.MENU_CATEGORY,
-      required: true,
-    },
-  ],
+  categories: { type: String },
 });

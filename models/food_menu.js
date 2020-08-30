@@ -5,30 +5,30 @@ const foodMenuSchema = require('../schemas/foodMenu');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
 
-const MenuCategory = require('./menu_category');
+// const MenuCategory = require('./menu_category');
 
 class FoodMenu extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(collectionNames.FOOD_MENU, foodMenuSchema);
 
     super(model);
-    MenuCategory();
+    // MenuCategory();
   }
 
   fetchAll() {
-    return this.model.find().populate('categoryId').lean();
+    return this.model.find();
   }
 
-  fetchById(id) {
-    return this.model.findById(id).populate('categoryId').lean();
-  }
+  // fetchById(id) {
+  //   return this.model.findById(id).populate('categoryId').lean();
+  // }
 
-  updateById(id, payload) {
-    return this.model
-      .findByIdAndUpdate({ _id: id }, payload, { new: true })
-      .populate('categoryId')
-      .lean();
-  }
+  // updateById(id, payload) {
+  //   return this.model
+  //     .findByIdAndUpdate({ _id: id }, payload, { new: true })
+  //     .populate('categoryId')
+  //     .lean();
+  // }
 }
 
 module.exports = () => {
