@@ -12,7 +12,7 @@ const { USER_TYPE } = require('../constants/user');
  */
 exports.createTenant = async (req, res, next) => {
   try {
-    const data = await adminService.createTenant(req.body);
+    const data = await adminService.createTenant(req.body, req.file);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

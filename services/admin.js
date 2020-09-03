@@ -9,14 +9,22 @@ const AuthenticationError = require('../lib/errors/authentication');
 const ValidationError = require('../lib/errors/validation');
 const { TENANT } = require('../constants/errorMessages');
 const { setCurrentTenant } = require('../utils/storage');
+const userService = require('./user');
+const tenantService = require('./tenant');
 
-exports.createTenant = function (payload) {
+exports.createTenant = async function (payload, file) {
   try {
     const data = {
       ...payload,
     };
 
-    return Tenant().save(data);
+    const tenant = await Tenant().save(data);
+
+    if (!file) {
+      return tenant;
+    }
+
+    return tenantService.uploadHotelImage(tenant.tenant, file);
   } catch (err) {
     console.log(err);
     throw err;
@@ -50,35 +58,16 @@ exports.createUser = async function createUser(payload) {
   try {
     const { tenant } = payload;
     const tenantData = await Tenant().fetchByName(tenant);
+    console.log(tenantData, tenant)
     if (!tenantData) {
       throw new ValidationError(TENANT.invalidTenant);
     }
 
     setCurrentTenant(tenant);
 
-    const userData = {
-      ...payload,
-      password: bcrypt.hashSync(payload.password),
-    };
+    const user = await userService.createUser(payload);
 
-    const user = await User().save(userData);
-
-    const staffCounter = await Counter().fetchStaffCounter();
-    const staffData = {
-      userId: user._id,
-      department: userData.department,
-      staffId: staffCounter.count,
-    };
-
-    const staff = await Staff().save(staffData);
-
-    const userObject = user.toJSON();
-
-    return {
-      ...userObject,
-      staffId: staff.staffId,
-      department: staff.department,
-    };
+    return user;
   } catch (err) {
     throw err;
   }

@@ -5,9 +5,12 @@ const authController = require('../controllers/auth');
 
 const validateRequest = require('../middleware/requestValidator');
 const adminUserValidationSchema = require('../validators/adminUserValidator');
-const tenantValidator = require('../validators/tenantValidator');
+const tenantValidationSchema = require('../validators/tenantValidator');
 const { authenticateUser } = require('../middleware/authenticate');
 const requestValidator = require('../middleware/requestValidator');
+const {
+  parseMultiPartFormData,
+} = require('../middleware/multiPartFormHandler');
 
 const router = Router();
 /**
@@ -16,7 +19,7 @@ const router = Router();
 router.post('/login', authController.login);
 
 /**
- * POST /api/admin/login
+ * POST /api/admin/refresh
  */
 router.post('/refresh', authController.refresh);
 
@@ -41,17 +44,19 @@ router.get('/tenant', adminController.fetchAllTenant);
  */
 router.post(
   '/tenant',
-  requestValidator(adminUserValidationSchema.create),
+  parseMultiPartFormData,
+  requestValidator(tenantValidationSchema.create),
   adminController.createTenant
 );
 
 /**
  * PUT /api/admin/tenant/:tenantId
  */
-router.post(
+router.put(
   '/tenant/:tenantId',
-  requestValidator(adminUserValidationSchema.update),
-  adminController.createTenant
+  parseMultiPartFormData,
+  requestValidator(tenantValidationSchema.update),
+  adminController.updateTenant
 );
 
 /**
@@ -59,6 +64,7 @@ router.post(
  */
 router.post(
   '/user',
+  parseMultiPartFormData,
   requestValidator(adminUserValidationSchema.create),
   adminController.createUser
 );

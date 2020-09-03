@@ -18,6 +18,11 @@ const create = Joi.object({
     otherwise: Joi.required(),
   }),
   currency: Joi.string().label('Currency'),
+  staffId: Joi.number().label('Staff Id').when('type', {
+    is: USER_TYPE.GUEST,
+    then: Joi.optional(),
+    otherwise: Joi.required(),
+  }),
 });
 
 const update = Joi.object({
@@ -30,6 +35,7 @@ const update = Joi.object({
     .valid(...Object.keys(USER_TYPE).map((key) => USER_TYPE[key])),
   department: Joi.string().label('Department'),
   currency: Joi.string().label('Currency'),
+  staffId: Joi.number().label('Staff Id'),
 });
 
 module.exports = {

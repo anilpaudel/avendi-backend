@@ -16,6 +16,16 @@ class Staff extends Model {
     return this.model.find().populate('userId');
   }
 
+  fetchByStaffId(staffId) {
+    return this.model.findOne({ staffId });
+  }
+
+  updateByUserId(userId, updateData) {
+    return this.model.findOneAndUpdate({ userId }, updateData, {
+      new: true,
+    });
+  }
+
   deleteByUserId(userId) {
     return this.model.findOneAndDelete({ userId });
   }

@@ -14,6 +14,13 @@ const NotFoundError = require('../lib/errors/notFoundError');
 
 async function createUser(payload, image) {
   try {
+    if (payload.staffId) {
+      const staff = await Staff().fetchByStaffId(payload.staffId);
+
+      if (staff) {
+        throw new CustomError('Given staffId already exists.', 400);
+      }
+    }
     const userData = {
       ...payload,
       password: bcrypt.hashSync(payload.password),
@@ -26,11 +33,11 @@ async function createUser(payload, image) {
     }
 
     if (user.type != USER_TYPE.GUEST) {
-      const staffCounter = await Counter().fetchStaffCounter();
+      // const staffCounter = await Counter().fetchStaffCounter();
       const staffData = {
         userId: user._id,
         department: userData.department,
-        staffId: staffCounter.count,
+        staffId: userData.staffId,
       };
 
       const staff = await Staff().save(staffData);
@@ -81,10 +88,33 @@ async function authenticate(email, password) {
 }
 
 async function updateUser(userId, updateData, file) {
+  if (payload.staffId) {
+    const staff = await Staff().fetchByStaffId(payload.staffId);
+
+    if (staff) {
+      throw new CustomError('Given staffId already exists.', 400);
+    }
+  }
   const user = await User().updateById(userId, updateData);
 
   if (!user) {
     throw new NotFoundError();
+  }
+
+  if (
+    user.type != USER_TYPE.GUEST &&
+    (updateData.department || updateData.staffId)
+  ) {
+    let staffData = {};
+
+    if (updateData.department) {
+      staffData.department = updateData.department;
+    }
+    if (updateData.staffId) {
+      staffData.staffId = updateData.staffId;
+    }
+
+    await Staff().updateByUserId(userId, staffData);
   }
 
   if (!file) {
