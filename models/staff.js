@@ -20,6 +20,10 @@ class Staff extends Model {
     return this.model.findOne({ staffId });
   }
 
+  fetchByUserId(){
+    return this.model.findOne({userId});
+  }
+
   updateByUserId(userId, updateData) {
     return this.model.findOneAndUpdate({ userId }, updateData, {
       new: true,

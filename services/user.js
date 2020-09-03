@@ -95,16 +95,17 @@ async function updateUser(userId, updateData, file) {
       throw new CustomError('Given staffId already exists.', 400);
     }
   }
-  const user = await User().updateById(userId, updateData);
+  let user = await User().updateById(userId, updateData);
 
   if (!user) {
     throw new NotFoundError();
   }
 
-  if (
-    user.type != USER_TYPE.GUEST &&
-    (updateData.department || updateData.staffId)
-  ) {
+  if (file) {
+    user = await uploadUserImage(userId, file);
+  }
+
+  if (user.type != USER_TYPE.GUEST) {
     let staffData = {};
 
     if (updateData.department) {
@@ -114,14 +115,18 @@ async function updateUser(userId, updateData, file) {
       staffData.staffId = updateData.staffId;
     }
 
-    await Staff().updateByUserId(userId, staffData);
+    const staff = await Staff().updateByUserId(userId, staffData);
+
+    const userObject = user.toJSON();
+
+    return {
+      ...userObject,
+      staffId: staff.staffId,
+      department: staff.department,
+    };
   }
 
-  if (!file) {
-    return user;
-  }
-
-  return uploadUserImage(userId, file);
+  return user;
 }
 
 async function deleteUser(userId) {
