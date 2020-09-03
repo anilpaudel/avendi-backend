@@ -88,8 +88,8 @@ async function authenticate(email, password) {
 }
 
 async function updateUser(userId, updateData, file) {
-  if (payload.staffId) {
-    const staff = await Staff().fetchByStaffId(payload.staffId);
+  if (updateData.staffId) {
+    const staff = await Staff().fetchByStaffId(updateData.staffId);
 
     if (staff) {
       throw new CustomError('Given staffId already exists.', 400);
