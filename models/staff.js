@@ -20,7 +20,7 @@ class Staff extends Model {
     return this.model.findOne({ staffId });
   }
 
-  fetchByUserId(){
+  fetchByUserId(userId){
     return this.model.findOne({userId});
   }
 

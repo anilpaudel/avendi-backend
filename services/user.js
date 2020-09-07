@@ -74,6 +74,17 @@ async function fetchById(userId) {
     throw new NotFoundError();
   }
 
+  if (user.type !== USER_TYPE.GUEST) {
+    const staff = await Staff().fetchByUserId(user._id);
+    const userObject = user.toJSON();
+
+    return {
+      ...userObject,
+      staffId: staff.staffId,
+      department: staff.department,
+    };
+  }
+
   return user;
 }
 
@@ -91,7 +102,7 @@ async function updateUser(userId, updateData, file) {
   if (updateData.staffId) {
     const staff = await Staff().fetchByStaffId(updateData.staffId);
 
-    if (staff) {
+    if (staff && staff.staffId !== updateData.staffId) {
       throw new CustomError('Given staffId already exists.', 400);
     }
   }
