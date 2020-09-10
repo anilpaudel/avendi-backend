@@ -16,7 +16,7 @@ module.exports = createSchema({
     ref: collectionNames.EXTENSION_RATE,
     required: true,
   },
-  assignTo: {
+  assignedTo: {
     type: Schema.Types.ObjectId,
     ref: collectionNames.USER,
   },

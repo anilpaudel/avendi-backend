@@ -25,11 +25,11 @@ exports.createRequest = async function (payload, guestId) {
       throw new CustomError('No active booking found.');
     }
 
-    if (data && data.assignTo) {
-      const assignee = await User().fetchById(data.assignTo);
+    if (data && data.assignedTo) {
+      const assignee = await User().fetchById(data.assignedTo);
 
       if (!assignee || (assignee && assignee.type === USER_TYPE.GUEST)) {
-        throw new ValidationError('Invalid AssignTo id provided.');
+        throw new ValidationError('Invalid AssignedTo id provided.');
       }
     }
 
@@ -68,7 +68,7 @@ exports.assignStaffToRequest = async function (requestId, staffId) {
   }
 
   const request = await Request().updateById(requestId, {
-    assignTo: staffId,
+    assignedTo: staffId,
     status: REQUEST_STATUS.IN_PROGRESS,
   });
   if (!request) {

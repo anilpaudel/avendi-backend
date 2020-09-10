@@ -78,13 +78,13 @@ exports.updateRequest = async (req, res, next) => {
 exports.assignToRequest = async (req, res, next) => {
   try {
     const { requestId } = req.params;
-    const { assignTo } = req.body;
+    const { assignedTo } = req.body;
 
-    if (!assignTo) {
-      throw new CustomError('No assignTo user Id provided', 400);
+    if (!assignedTo) {
+      throw new CustomError('No assignedTo user Id provided', 400);
     }
 
-    const data = await requestService.assignStaffToRequest(requestId, assignTo);
+    const data = await requestService.assignStaffToRequest(requestId, assignedTo);
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);

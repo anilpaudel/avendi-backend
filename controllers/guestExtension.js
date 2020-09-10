@@ -79,15 +79,15 @@ exports.updateExtension = async (req, res, next) => {
 exports.assignToExtension = async (req, res, next) => {
   try {
     const { extensionId } = req.params;
-    const { assignTo } = req.body;
+    const { assignedTo } = req.body;
 
-    if (!assignTo) {
-      throw new CustomError('No assignTo user Id provided', 400);
+    if (!assignedTo) {
+      throw new CustomError('No assignedTo user Id provided', 400);
     }
 
     const data = await extensionService.assignStaffToExtension(
       extensionId,
-      assignTo
+      assignedTo
     );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

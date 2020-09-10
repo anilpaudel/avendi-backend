@@ -57,7 +57,7 @@ function configureEnvironmentVariables() {
  */
 function configureServer() {
   // destruct the environmental variables
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3003;
   const mode = process.env.NODE_ENV;
 
   // create the server

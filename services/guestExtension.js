@@ -18,11 +18,11 @@ exports.createExtension = async function (payload, guestId) {
       throw new ValidationError('Invalid guest Id provided.');
     }
 
-    if (data && data.assignTo) {
-      const assignee = await User().fetchById(data.assignTo);
+    if (data && data.assignedTo) {
+      const assignee = await User().fetchById(data.assignedTo);
 
       if (!assignee || (assignee && assignee.type === USER_TYPE.GUEST)) {
-        throw new ValidationError('Invalid AssignTo id provided.');
+        throw new ValidationError('Invalid AssignedTo id provided.');
       }
     }
 
@@ -79,11 +79,11 @@ exports.assignStaffToExtension = async function (extensionId, staffId) {
   const user = await User().fetchById(staffId);
 
   if (!user || (user && user.type === USER_TYPE.GUEST)) {
-    throw new ValidationError('Invalid AssignTo id provided.');
+    throw new ValidationError('Invalid AssignedTo id provided.');
   }
 
   const extension = await Extension().updateById(extensionId, {
-    assignTo: staffId,
+    assignedTo: staffId,
   });
 
   if (!extension) {

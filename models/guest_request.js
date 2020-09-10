@@ -1,6 +1,8 @@
 const mongoose = require('../config/database');
 
 const Model = require('./base_model');
+const Booking = require('./booking');
+const User = require('./user');
 const guestRequestSchema = require('../schemas/guestRequest');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
@@ -13,10 +15,27 @@ class GuestRequest extends Model {
     );
 
     super(model);
+    Booking();
+    User();
   }
 
   fetchAll(type) {
-    return this.model.find({ type: type });
+    console.log('Test');
+    return this.model.find({ type: type }).populate({
+      path: 'bookingId assignedTo',
+      populate: {
+        path: 'guestId roomId',
+      },
+    });
+  }
+
+  fetchById(id) {
+    return this.model.fetchById(id).populate({
+      path: 'bookingId assignedTo',
+      populate: {
+        path: 'guestId roomId',
+      },
+    });
   }
 }
 

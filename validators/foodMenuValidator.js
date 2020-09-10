@@ -10,6 +10,8 @@ const create = Joi.object({
     .required(),
   name: Joi.string().label('Name').trim().min(1).max(500).required(),
   categories: Joi.string().label('Categories').min(1).required(),
+  dietaryRestrictions: Joi.string().label('Dietary Restrictions').min(1),
+  menuType: Joi.string().label('Menu Type').min(1),
 });
 
 const update = Joi.object({
@@ -22,6 +24,8 @@ const update = Joi.object({
     .optional(),
   name: Joi.string().label('Name').trim().min(1).max(500).optional(),
   categories: Joi.string().label('categories').min(1).optional(),
+  dietaryRestrictions: Joi.string().label('Dietary Restrictions').min(1),
+  menuType: Joi.string().label('Menu Type').min(1),
 });
 
 module.exports = {
