@@ -35,7 +35,7 @@ class GuestExtension extends Model {
   }
 
   fetchById(id) {
-    return this.model.fetchById(id).populate({
+    return this.model.findById(id).populate({
       path: 'bookingId assignedTo',
       populate: {
         path: 'guestId roomId',
