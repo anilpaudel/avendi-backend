@@ -11,7 +11,10 @@ class Message extends Model {
    * This constructs the Message model with predefined CRUD operations.
    */
   constructor(dbConnection) {
-    const model = dbConnection.model(collectionNames.MESSAGE, messageSchema);
+    const model = dbConnection.model(
+      collectionNames.MESSAGE,
+      messageSchema.plugin(mongoosePaginate)
+    );
 
     super(model);
   }

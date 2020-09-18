@@ -28,7 +28,7 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await userService.fetchAll();
+    const data = await userService.fetchAll(req.query);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
@@ -45,7 +45,7 @@ exports.fetchAll = async (req, res, next) => {
  */
 exports.fetchAllTeam = async (req, res, next) => {
   try {
-    const data = await userService.fetchAllTeam();
+    const data = await userService.fetchAllTeam(req.query);
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

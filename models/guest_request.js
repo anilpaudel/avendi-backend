@@ -1,4 +1,5 @@
 const mongoose = require('../config/database');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Model = require('./base_model');
 const Booking = require('./booking');
@@ -6,12 +7,15 @@ const User = require('./user');
 const guestRequestSchema = require('../schemas/guestRequest');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
+const { buildPageParams } = require('../utils/pagination');
 
 class GuestRequest extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(
       collectionNames.GUEST_REQUEST,
-      createSchema(guestRequestSchema, { timestamps: true })
+      createSchema(guestRequestSchema, { timestamps: true }).plugin(
+        mongoosePaginate
+      )
     );
 
     super(model);
@@ -19,14 +23,19 @@ class GuestRequest extends Model {
     User();
   }
 
-  fetchAll(type) {
-    console.log('Test');
-    return this.model.find({ type: type }).populate({
-      path: 'bookingId assignedTo',
+  fetchAll(type, filter) {
+    const options = {
+      ...buildPageParams(filter),
       populate: {
-        path: 'guestId roomId',
+        path: 'bookingId assignedTo',
+        populate: {
+          path: 'guestId roomId',
+        },
       },
-    });
+      sort: { requestedAt: -1 },
+    };
+
+    return this.model.paginate({ type }, options);
   }
 
   fetchById(id) {

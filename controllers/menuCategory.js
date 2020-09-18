@@ -19,8 +19,8 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await menuCategoryService.fetchAll();
-    res.status(HttpStatus.OK).json({ data });
+    const data = await menuCategoryService.fetchAll(req.query);
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }
@@ -46,7 +46,10 @@ exports.updateMenuCategory = async (req, res, next) => {
   try {
     const { menuCategoryId } = req.params;
     const updatePayload = req.body;
-    const data = await menuCategoryService.updateMenuCategory(menuCategoryId, updatePayload);
+    const data = await menuCategoryService.updateMenuCategory(
+      menuCategoryId,
+      updatePayload
+    );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);

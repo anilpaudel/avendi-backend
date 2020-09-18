@@ -4,6 +4,7 @@ const Booking = require('../models/booking');
 const { USER_TYPE } = require('../constants/user');
 const CustomError = require('../lib/errors/customError');
 const { BOOKING_STATUS } = require('../constants/booking');
+const { filterPaginationLabels } = require('../utils/pagination');
 const bookingMessage = require('../constants/errorMessages').BOOKING;
 
 async function createBooking(payload) {
@@ -49,7 +50,11 @@ async function createBooking(payload) {
   }
 }
 
-const fetchAll = () => Booking().fetchAll();
+const fetchAll = async (filter) => {
+  const bookings = await Booking().fetchAll(filter);
+
+  return filterPaginationLabels(bookings);
+};
 
 async function updateBooking(bookingId, updateData) {
   const booking = await Booking().fetchById(bookingId);

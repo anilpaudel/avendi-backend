@@ -20,8 +20,8 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await foodMenuService.fetchAll();
-    res.status(HttpStatus.OK).json({ data });
+    const data = await foodMenuService.fetchAll(req.query);
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }

@@ -4,6 +4,7 @@ const NotFoundError = require('../lib/errors/notFoundError');
 const CustomError = require('../lib/errors/customError');
 const { uploadToS3 } = require('../utils/uploadToS3');
 const { addTimestampToFilename } = require('../utils/string');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 exports.createFoodMenu = async function (payload, image) {
   try {
@@ -64,10 +65,12 @@ const formatMenu = (menu) => {
   return menu;
 };
 
-exports.fetchAll = async () => {
-  const menuData = await FoodMenu().fetchAll();
+exports.fetchAll = async (filter) => {
+  const menuData = await FoodMenu().fetchAll(filter);
 
-  return menuData.map(formatMenu);
+  const updatedData = menuData.docs.map(formatMenu);
+
+  return filterPaginationLabels({ ...menuData, docs: updatedData });
 };
 
 exports.fetchById = async (foodMenuId) => {

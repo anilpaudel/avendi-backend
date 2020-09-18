@@ -1,4 +1,5 @@
 const mongoose = require('../config/database');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Model = require('./base_model');
 const Booking = require('./booking');
@@ -7,9 +8,13 @@ const Room = require('./room');
 const feedBackSchema = require('../schemas/feedback');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
+const { buildPageParams } = require('../utils/pagination');
 class FeedBack extends Model {
   constructor(dbConnection) {
-    const model = dbConnection.model(collectionNames.FEEDBACK, feedBackSchema);
+    const model = dbConnection.model(
+      collectionNames.FEEDBACK,
+      feedBackSchema.plugin(mongoosePaginate)
+    );
 
     Booking();
     Staff();
@@ -18,11 +23,16 @@ class FeedBack extends Model {
     super(model);
   }
 
-  fetchAll() {
-    return this.model.find().populate({
-      path: 'bookingId staffId',
-      populate: [{ path: 'roomId', select: 'number' }, { path: 'guestId' }],
-    });
+  fetchAll(filter) {
+    const options = {
+      ...buildPageParams,
+      populate: {
+        path: 'bookingId staffId',
+        populate: [{ path: 'roomId', select: 'number' }, { path: 'guestId' }],
+      },
+      sort: { updatedAt: -1 },
+    };
+    return this.model.paginate({}, options);
   }
 
   fetchById(id) {

@@ -6,6 +6,7 @@ const CustomError = require('../lib/errors/customError');
 const ValidationError = require('../lib/errors/validation');
 const { REQUEST_STATUS } = require('../constants/guestRequest');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 exports.createRequest = async function (payload, guestId) {
   try {
@@ -40,7 +41,11 @@ exports.createRequest = async function (payload, guestId) {
   }
 };
 
-exports.fetchAll = (type) => Request().fetchAll(type);
+exports.fetchAll = async (type, filter) => {
+  const request = await Request().fetchAll(type, filter);
+
+  return filterPaginationLabels(request);
+};
 
 exports.fetchById = async (requestId) => {
   const request = await Request().fetchById(requestId);

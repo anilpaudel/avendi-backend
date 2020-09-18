@@ -32,9 +32,9 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await extensionService.fetchAll();
+    const data = await extensionService.fetchAll(req.query);
 
-    res.status(HttpStatus.OK).json({ data });
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }

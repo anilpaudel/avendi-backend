@@ -11,6 +11,7 @@ const authMessage = require('../constants/errorMessages').AUTH;
 const AuthenticationError = require('../lib/errors/authentication');
 const CustomError = require('../lib/errors/customError');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 async function createUser(payload, image) {
   try {
@@ -57,14 +58,16 @@ async function createUser(payload, image) {
   }
 }
 
-function fetchAll() {
-  return User().fetchAll();
+async function fetchAll(filter) {
+  const users = await User().fetchAll(filter);
+
+  return filterPaginationLabels(users)
 }
 
-async function fetchAllTeam() {
-  const staff = await Staff().fetchAll();
+async function fetchAllTeam(filter) {
+  const staff = await Staff().fetchAll(filter);
 
-  return staff;
+  return filterPaginationLabels(staff);
 }
 
 async function fetchById(userId) {

@@ -7,6 +7,7 @@ const ValidationError = require('../lib/errors/validation');
 const CustomError = require('../lib/errors/customError');
 const { USER_TYPE } = require('../constants/user');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 //const authMessage = require('../constants/messages').AUTH;
 
 exports.createFeedback = async function (payload, guestId) {
@@ -57,12 +58,12 @@ const formatFeedbackData = (data) => {
   return updatedResult;
 };
 
-exports.fetchAll = async function () {
-  const feedbackList = await Feedback().fetchAll();
+exports.fetchAll = async function (filter) {
+  const feedbackList = await Feedback().fetchAll(filter);
 
-  const formattedResult = feedbackList.map(formatFeedbackData);
+  const formattedResult = feedbackList.docs.map(formatFeedbackData);
 
-  return formattedResult;
+  return filterPaginationLabels({ ...feedbackList, docs: formattedResult });
 };
 
 exports.fetchById = async (feedbackId) => {

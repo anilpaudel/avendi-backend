@@ -1,5 +1,6 @@
 const ExtensionRate = require('../models/extension-rate');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 exports.createExtensionRate = function (payload) {
   try {
@@ -14,7 +15,11 @@ exports.createExtensionRate = function (payload) {
   }
 };
 
-exports.fetchAll = () => ExtensionRate().fetchAll();
+exports.fetchAll = async (filter) => {
+  const rate = await ExtensionRate().fetchAll(filter);
+
+  return filterPaginationLabels(rate)
+};
 
 exports.fetchById = async (extensionRateId) => {
   const extensionRate = await ExtensionRate().fetchById(extensionRateId);

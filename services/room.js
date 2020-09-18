@@ -1,6 +1,7 @@
 const Room = require('../models/room');
 const AuthenticationError = require('../lib/errors/authentication');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 //const authMessage = require('../constants/messages').AUTH;
 
 exports.createRoom = function (payload) {
@@ -16,7 +17,11 @@ exports.createRoom = function (payload) {
   }
 };
 
-exports.fetchAll = () => Room().fetchAll();
+exports.fetchAll = async (filter) => {
+  const rooms = await Room().fetchAll(filter);
+
+  return filterPaginationLabels(rooms);
+};
 
 exports.fetchById = async (roomId) => {
   const room = await Room().fetchById(roomId);

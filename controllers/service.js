@@ -20,9 +20,9 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await serviceService.fetchAll();
+    const data = await serviceService.fetchAll(req.query);
 
-    res.status(HttpStatus.OK).json({ data });
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }

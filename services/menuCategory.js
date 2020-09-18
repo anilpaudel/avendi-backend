@@ -1,5 +1,6 @@
 const MenuCategory = require('../models/menu_category');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 exports.createMenuCategory = function (payload) {
   try {
@@ -14,7 +15,11 @@ exports.createMenuCategory = function (payload) {
   }
 };
 
-exports.fetchAll = () => MenuCategory().fetchAll();
+exports.fetchAll = async (filter) => {
+  const category = await MenuCategory().fetchAll(filter);
+
+  return filterPaginationLabels(category);
+};
 
 exports.fetchById = async (menuCategoryId) => {
   const category = await MenuCategory().fetchById(menuCategoryId);

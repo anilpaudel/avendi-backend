@@ -28,9 +28,9 @@ exports.create = async (req, res, next) => {
  */
 exports.fetchAll = async (req, res, next) => {
   try {
-    const data = await extensionRateService.fetchAll();
+    const data = await extensionRateService.fetchAll(req.query);
 
-    res.status(HttpStatus.OK).json({ data });
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }
@@ -67,7 +67,10 @@ exports.updateExtensionRate = async (req, res, next) => {
     const { extensionRateId } = req.params;
     const updatePayload = req.body;
 
-    const data = await extensionRateService.updateExtensionRate(extensionRateId, updatePayload);
+    const data = await extensionRateService.updateExtensionRate(
+      extensionRateId,
+      updatePayload
+    );
 
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {

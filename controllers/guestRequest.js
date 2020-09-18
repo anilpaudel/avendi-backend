@@ -34,9 +34,9 @@ exports.fetchAll = async (req, res, next) => {
   try {
     const { type } = req.query;
 
-    const data = await requestService.fetchAll(type);
+    const data = await requestService.fetchAll(type, req.query);
 
-    res.status(HttpStatus.OK).json({ data });
+    res.status(HttpStatus.OK).json(data);
   } catch (err) {
     next(err);
   }
@@ -84,7 +84,10 @@ exports.assignToRequest = async (req, res, next) => {
       throw new CustomError('No assignedTo user Id provided', 400);
     }
 
-    const data = await requestService.assignStaffToRequest(requestId, assignedTo);
+    const data = await requestService.assignStaffToRequest(
+      requestId,
+      assignedTo
+    );
     res.status(HttpStatus.OK).json({ data });
   } catch (err) {
     next(err);

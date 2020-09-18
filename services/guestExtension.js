@@ -5,6 +5,7 @@ const Extension = require('../models/guest_extension');
 const ExtensionRate = require('../models/extension-rate');
 const ValidationError = require('../lib/errors/validation');
 const NotFoundError = require('../lib/errors/notFoundError');
+const { filterPaginationLabels } = require('../utils/pagination');
 
 exports.createExtension = async function (payload, guestId) {
   try {
@@ -48,7 +49,11 @@ exports.createExtension = async function (payload, guestId) {
   }
 };
 
-exports.fetchAll = () => Extension().fetchAll();
+exports.fetchAll = async (filter) => {
+  const extension = await Extension().fetchAll(filter);
+
+  return filterPaginationLabels(extension);
+};
 
 exports.fetchById = async (extensionId) => {
   const extension = await Extension().fetchById(extensionId);

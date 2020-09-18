@@ -1,4 +1,5 @@
 const mongoose = require('../config/database');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Model = require('./base_model');
 const Booking = require('./booking');
@@ -10,12 +11,14 @@ const ExtensionRate = require('./extension-rate');
 const guestExtensionSchema = require('../schemas/guestExtension');
 const { collectionNames, createSchema } = require('../schemas/index');
 const { getCurrentTenant } = require('../utils/storage');
+const { buildPageParams } = require('../utils/pagination');
+const { option } = require('commander');
 
 class GuestExtension extends Model {
   constructor(dbConnection) {
     const model = dbConnection.model(
       collectionNames.GUEST_EXTENSION,
-      guestExtensionSchema
+      guestExtensionSchema.plugin(mongoosePaginate)
     );
 
     super(model);
@@ -25,13 +28,19 @@ class GuestExtension extends Model {
     ExtensionRate();
   }
 
-  fetchAll() {
-    return this.model.find().populate({
-      path: 'bookingId assignedTo rateId',
+  fetchAll(filter) {
+    const options = {
+      ...buildPageParams(filter),
       populate: {
-        path: 'guestId roomId',
+        path: 'bookingId assignedTo rateId',
+        populate: {
+          path: 'guestId roomId',
+        },
       },
-    });
+      sort: { updatedAt: -1 },
+    };
+
+    return this.model.paginate({}, options);
   }
 
   fetchById(id) {
