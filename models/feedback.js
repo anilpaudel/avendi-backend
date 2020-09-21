@@ -25,7 +25,7 @@ class FeedBack extends Model {
 
   fetchAll(filter) {
     const options = {
-      ...buildPageParams,
+      ...buildPageParams(filter),
       populate: {
         path: 'bookingId staffId',
         populate: [{ path: 'roomId', select: 'number' }, { path: 'guestId' }],
